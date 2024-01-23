@@ -1,0 +1,73 @@
+<template>
+  <div>
+    <AdminNav />
+
+    <div class="p-3">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">Admin</li>
+          <li class="breadcrumb-item active">Dashboard</li>
+        </ol>
+      </nav>
+
+      <div class="container text-center">
+        <div class="row">
+          <div class="col">
+            <div class="card text-bg-success mb-3 h-100">
+              <div class="card-header">Approved</div>
+              <div class="card-body">
+                <h5 class="card-title">{{ studentCount.approved }}</h5>
+                <p class="card-text">
+                  This shows the total number of approved users
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card text-bg-primary mb-3 h-100">
+              <div class="card-header">Pending</div>
+              <div class="card-body">
+                <h5 class="card-title">{{ studentCount.pending }}</h5>
+                <p class="card-text">
+                  This shows the total number of pending users
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card text-bg-danger mb-3 h-100">
+              <div class="card-header">Rejected</div>
+              <div class="card-body">
+                <h5 class="card-title">{{ studentCount.rejected }}</h5>
+                <p class="card-text">
+                  This shows the total number of rejected users
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import AdminNav from "@/components/admin-nav.vue";
+import api from "@/http/api";
+import { onMounted, ref } from "vue";
+
+const studentCount = ref({
+  approved: 0,
+  pending: 0,
+  rejected: 0,
+});
+
+const loadCountStudents = async () => {
+  const response = await api.get("/admin/countAll/");
+  studentCount.value = response.data;
+};
+
+onMounted(async () => {
+  await loadCountStudents();
+});
+</script>
