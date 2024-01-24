@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useAuthStore } from "@/stores/authStore";
 
+// IF USER IS NOT AUTHENTICATED, REDIRECT TO LOGIN PAGE
 const auth = (to, from, next) => {
   const authStore = useAuthStore();
 
@@ -11,6 +12,7 @@ const auth = (to, from, next) => {
   }
 };
 
+// CREATE ROUTER INSTANCE TO BE USED BY THE APP
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -33,17 +35,13 @@ const router = createRouter({
     },
     {
       path: "/admin/users",
+      component: () => import("@/pages/admin/users/index.vue"),
       beforeEnter: auth,
-      children: [
-        {
-          path: "",
-          component: () => import("@/pages/admin/users/index.vue"),
-        },
-        {
-          path: "/admin/users/create",
-          component: () => import("@/pages/admin/users/create-student.vue"),
-        },
-      ],
+    },
+    {
+      path: "/admin/users/create",
+      component: () => import("@/pages/admin/users/create-student.vue"),
+      beforeEnter: auth,
     },
     {
       path: "/student/dashboard",
