@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <!-- WE ADD .PREVENT TO AVOID RELOADING THE PAGE WHEN THE FORM SUBMITS -->
     <form class="mt-5 p-5" @submit.prevent="submitForm">
       <div class="mb-3">
         <label class="form-label">First Name</label>
@@ -34,6 +35,7 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 
+// THIS IS THE USER DATA OR INPUT WILL BE STORED AND EVENTUALLY WILL BE SENT INTO THE API
 const form = ref({
   first_name: "",
   last_name: "",
@@ -43,8 +45,10 @@ const form = ref({
   usertype: "student",
 });
 
+// SUBMIT THE FORM
 const submitForm = async () => {
   const response = await api.post("/jwt/register", form.value);
+  // REDIRECT THE USER TO LOGIN PAGE WHEN SUCCESSFULLY REGISTERED
   if (response.status === 200) {
     router.push("/");
   }

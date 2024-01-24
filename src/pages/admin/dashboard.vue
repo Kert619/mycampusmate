@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- ADMIN NAVIGATION BAR -->
     <AdminNav />
 
     <div class="p-3">
@@ -56,17 +57,20 @@ import AdminNav from "@/components/admin-nav.vue";
 import api from "@/http/api";
 import { onMounted, ref } from "vue";
 
+// DISPLAY LOADING TEXT IF LOADING IS NOT DONE YET
 const studentCount = ref({
-  approved: 0,
-  pending: 0,
-  rejected: 0,
+  approved: "Loading",
+  pending: "Loading",
+  rejected: "Loading",
 });
 
+// COUNT THE TOTAL NUMBER OF APPROVED, PENDING, AND REJECTED USERS
 const loadCountStudents = async () => {
   const response = await api.get("/admin/countAll/");
   studentCount.value = response.data;
 };
 
+// LOAD ONLY WHEN THE PAGE IS LOADED
 onMounted(async () => {
   await loadCountStudents();
 });

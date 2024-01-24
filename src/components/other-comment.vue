@@ -1,6 +1,6 @@
 <template>
   <div class="bg-light p-3">
-    <!-- PERSON WHO COMMENT -->
+    <!-- PERSON WHO COMMENT BUTTON-->
     <button class="btn mb-2 d-flex gap-2 align-items-center">
       <img src="@/assets/images/bg.png" class="rounded-circle" width="24" />
       <div class="d-flex flex-column align-items-start">
@@ -8,7 +8,7 @@
         <span class="text-xs text-secondary">Jan. 24, 2024 12:04 pm</span>
       </div>
     </button>
-    <!-- TEXT COMMENT -->
+    <!-- TEXT COMMENT CONTENT-->
     <p class="text-sm">
       Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum explicabo,
       porro iure cum quidem enim unde? Nam sapiente molestias, id repudiandae

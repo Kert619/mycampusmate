@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- ADMIN NAVIGATION -->
     <AdminNav />
     <div class="p-3">
       <nav aria-label="breadcrumb">
@@ -17,7 +18,11 @@
         </div>
 
         <div class="table-responsive">
-          <table class="table" v-if="users">
+          <!-- DISPLAY LOADING IF FETCHING IS NOT DONE -->
+          <div v-if="loading">LOADING...</div>
+
+          <!-- DISPLAY THIS TABLE IF FETCHING IS DONE -->
+          <table class="table" v-else-if="users">
             <thead>
               <tr>
                 <th scope="col">#</th>
@@ -35,16 +40,20 @@
                 <td>{{ user.last_name }}</td>
                 <td>{{ user.middle_name }}</td>
                 <td>
+                  <!-- 0 = PENDING, 1 = APPROVED, 2 = REJECTED -->
+                  <!-- DISPLAY PENDING BADGE IF USER STATUS IS PENDING -->
                   <span
                     v-if="user.is_approved == 0"
                     class="badge rounded-pill text-bg-primary"
                     >Pending</span
                   >
+                  <!-- DISPLAY APPROVED BADGE IF USER STATUS IS APPROVED -->
                   <span
                     v-if="user.is_approved == 1"
                     class="badge rounded-pill text-bg-success"
                     >Approved</span
                   >
+                  <!-- DISPLAY REJECTED BADGE IF USER STATUS IS REJECTED -->
                   <span
                     v-if="user.is_approved == 2"
                     class="badge rounded-pill text-bg-danger"
@@ -52,6 +61,7 @@
                   >
                 </td>
                 <td>
+                  <!-- DISABLE BUTTON IF USER IS APPROVED OR REJECTED -->
                   <button
                     type="button"
                     class="btn btn-success me-3"
@@ -86,23 +96,27 @@ import { onMounted, ref } from "vue";
 const loading = ref(false);
 const users = ref(null);
 
+// GET ALL USERS
 const loadUsers = async () => {
-  loading.value = false;
+  loading.value = true;
   const response = await api.get("/admin/getAllStudent/");
   users.value = response.data;
-  loading.value = true;
+  loading.value = false;
 };
 
+// LOAD USERS WHEN PAGE LOADS
 onMounted(async () => {
   await loadUsers();
 });
 
+// APPROVE STUDENT
 const approveStudent = async (id) => {
   await api.put("/admin/approveStudent/", null, { params: { id } });
   const user = users.value.find((x) => x.id == id);
   user.is_approved = 1;
 };
 
+// REJECT STUDENT
 const rejectStudent = async (id) => {
   await api.delete("/admin/rejectStudent/", { params: { id } });
   const user = users.value.find((x) => x.id == id);

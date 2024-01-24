@@ -27,6 +27,7 @@
 import { ref } from "vue";
 const textAreaRef = ref(null);
 
+// AUTO RESIZE THE INPUT BASE ON THE CONTENT
 const resize = () => {
   textAreaRef.value.style.height = "auto";
   textAreaRef.value.style.height = textAreaRef.value.scrollHeight + "px";

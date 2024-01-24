@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- ADMIN NAVIGATION -->
     <AdminNav />
     <div class="p-3">
       <nav aria-label="breadcrumb">
@@ -10,6 +11,7 @@
         </ol>
       </nav>
       <div class="container">
+        <!-- WE ADD .PREVENT TO AVOID RELOADING THE PAGE WHEN THE FORM SUBMITS -->
         <form @submit.prevent="submitForm">
           <div class="mb-3">
             <label class="form-label">First Name</label>
@@ -57,6 +59,7 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 
+// THIS IS THE USER DATA OR INPUT WILL BE STORED AND EVENTUALLY WILL BE SENT INTO THE API
 const form = ref({
   first_name: "",
   last_name: "",
@@ -66,9 +69,11 @@ const form = ref({
   usertype: "student",
 });
 
+// SUBMIT THE FORM
 const submitForm = async () => {
   const response = await api.post("/admin/createStudent/", form.value);
   if (response.data.status === 200) {
+    // REDIRECT TO USERS PAGE IF SUCCESS
     router.push("/admin/users");
   }
 };

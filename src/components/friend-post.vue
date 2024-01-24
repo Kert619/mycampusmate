@@ -1,6 +1,6 @@
 <template>
   <div class="p-3 rounded bg-white">
-    <!-- PERSON WHO POST -->
+    <!-- PERSON WHO POST BUTTON-->
     <button class="btn mb-2 d-flex gap-2 align-items-center">
       <img src="@/assets/images/bg.png" class="rounded-circle" width="24" />
       <div class="d-flex flex-column align-items-start">
@@ -9,7 +9,7 @@
       </div>
     </button>
 
-    <!-- POST TEXT -->
+    <!-- POST TEXT CONTENT-->
     <p>
       Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga doloremque
       aut dolore atque consequatur alias fugit nesciunt necessitatibus autem rem

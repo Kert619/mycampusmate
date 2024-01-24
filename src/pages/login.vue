@@ -1,5 +1,6 @@
 <template>
   <div class="d-flex justify-content-center">
+    <!-- WE ADD .PREVENT TO AVOID RELOADING THE PAGE WHEN THE FORM SUBMITS -->
     <form class="my-5 p-5 border" @submit.prevent="submitForm">
       <div class="d-flex justify-content-center mb-3">
         <img src="@/assets/images/logo.png" width="300" />
@@ -13,6 +14,7 @@
         <input type="password" class="form-control" v-model="form.password" />
       </div>
 
+      <!-- DISPLAY ERROR MESSAGE IF THE ERRORMSG VARIABLE HAS A VALUE OR NOT EMPTY -->
       <div class="alert alert-danger text-center" v-if="errorMsg">
         {{ errorMsg }}
       </div>
@@ -38,27 +40,34 @@ import { useAuthStore } from "@/stores/authStore";
 const router = useRouter();
 const authStore = useAuthStore();
 
+// THIS IS THE USER DATA OR INPUT WILL BE STORED AND EVENTUALLY WILL BE SENT INTO THE SERVER
 const form = ref({
   username: "",
   password: "",
 });
 
+// WE STORE THE ERROR MESSAGE HERE IF LOGIN FAILED
 const errorMsg = ref(null);
 
+// SUBMIT THE FORM
 const submitForm = async () => {
   const response = await api.post("/jwt/login", form.value);
   const token = response.data.token;
 
   if (token) {
+    // STORE THE TOKEN IN LOCAL STORAGE IF LOGIN SUCCESS
     localStorage.setItem("token", token);
     authStore.token = token;
 
     if (response.data.data.usertype === "admin") {
+      // REDIRECT TO ADMIN DASHBOARD IF USERTYPE IS ADMIN
       router.push("/admin/dashboard");
     } else {
+      // REDIRECT TO STUDENT DASHBOARD IF USERTYPE IS STUDENT
       router.push("/student/dashboard");
     }
   } else {
+    // POPULATE ERROR MESSAGE IF LOGIN FAILED
     errorMsg.value = response.data;
   }
 };

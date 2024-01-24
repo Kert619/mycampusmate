@@ -1,13 +1,13 @@
 <template>
   <div class="p-3 rounded bg-white">
     <div class="mb-3">
-      <!-- USER WHO POST -->
+      <!-- USER WHO POST BUTTON-->
       <button class="btn mb-2 d-flex gap-2 align-items-center">
         <img src="@/assets/images/bg.png" class="rounded-circle" width="24" />
         <span class="text-sm">Sample Student</span>
       </button>
 
-      <!-- POST TEXT -->
+      <!-- POST TEXT INPUT-->
       <textarea
         class="form-control overflow-y-hidden"
         rows="3"
@@ -27,6 +27,7 @@ import { ref } from "vue";
 
 const textAreaRef = ref(null);
 
+// AUTO RESIZE THE INPUT BASE ON THE CONTENT
 const resize = () => {
   textAreaRef.value.style.height = "auto";
   textAreaRef.value.style.height = textAreaRef.value.scrollHeight + "px";

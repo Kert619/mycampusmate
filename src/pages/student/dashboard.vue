@@ -1,7 +1,7 @@
 <template>
   <div class="vw-100 vh-100 d-flex flex-column overflow-auto">
-    <!-- NAVIGATION -->
-    <StudentNav></StudentNav>
+    <!-- HEADER -->
+    <StudentHeader></StudentHeader>
     <main class="flex-grow-1 container overflow-auto">
       <div class="row h-100 overflow-auto">
         <!-- LEFT SIDEBAR -->
@@ -16,6 +16,7 @@
               />
             </div>
 
+            <!-- NAVIGATION BUTTONS -->
             <div class="flex-grow-1 overflow-auto">
               <div class="d-grid gap-2">
                 <!-- HOME BUTTON -->
@@ -80,7 +81,7 @@
           </div>
         </div>
 
-        <!-- MAIN CONTENT -->
+        <!-- MAIN CONTENT/NEWSFEED -->
         <div
           class="col col-6 overflow-auto h-100 overflow-auto bg-body-secondary"
         >
@@ -114,7 +115,7 @@
 </template>
 
 <script setup>
-import StudentNav from "@/components/student-nav.vue";
+import StudentHeader from "@/components/student-header.vue";
 import FriendList from "@/components/friend-list.vue";
 import CreatePost from "@/components/create-post.vue";
 import FriendPost from "@/components/friend-post.vue";

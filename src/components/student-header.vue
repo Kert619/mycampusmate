@@ -1,4 +1,5 @@
 <template>
+  <!-- STUDENT PAGE HEADER -->
   <nav class="navbar navbar-expand-lg bg-white shadow">
     <div class="container">
       <RouterLink to="/student/dashboard" class="navbar-brand">
