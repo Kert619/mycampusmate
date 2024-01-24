@@ -3,9 +3,8 @@ import { useAuthStore } from "@/stores/authStore";
 
 const auth = (to, from, next) => {
   const authStore = useAuthStore();
-  const token = authStore.token;
 
-  if (token) {
+  if (authStore.token) {
     next();
   } else {
     next("/login");
@@ -17,7 +16,7 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      component: () => import("@/pages/index.vue"),
+      redirect: "/login",
     },
     {
       path: "/login",

@@ -52,9 +52,8 @@ const submitForm = async () => {
   if (token) {
     localStorage.setItem("token", token);
     authStore.token = token;
-    authStore.userInfo = response.data.data;
 
-    if (authStore.userInfo.usertype === "admin") {
+    if (response.data.data.usertype === "admin") {
       router.push("/admin/dashboard");
     } else {
       router.push("/student/dashboard");

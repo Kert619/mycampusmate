@@ -18,22 +18,13 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <RouterLink
-              active-class=" active"
+            <a
               class="nav-link"
-              to="/admin/dashboard"
+              href="https://www.coderstribe.net"
+              target="_blank"
             >
-              My Timeline</RouterLink
-            >
-          </li>
-          <li class="nav-item">
-            <RouterLink
-              active-class=" active"
-              class="nav-link"
-              to="/admin/users"
-            >
-              Profile</RouterLink
-            >
+              <img src="@/assets/images/coderstribe.png" height="60"
+            /></a>
           </li>
         </ul>
       </div>

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- LIST OF FRIENDS -->
     <ul class="list-group list-group-flush">
       <button
         class="list-group-item list-group-item-action d-flex align-items-center gap-3"

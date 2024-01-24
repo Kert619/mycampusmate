@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:1999",
+  baseURL: "https://mycampusmate-be.fly.dev",
 });
 
 api.interceptors.request.use((config) => {
