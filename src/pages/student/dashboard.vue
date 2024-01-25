@@ -114,13 +114,6 @@
             <FriendPost></FriendPost>
             <FriendPost></FriendPost>
             <FriendPost></FriendPost>
-            <VLazyImage
-              src="https://source.unsplash.com/random/200×200 "
-              src-placeholder="/spinner.svg"
-              class="rounded-circle"
-              width="200"
-              height="200"
-            />
           </div>
         </div>
 
