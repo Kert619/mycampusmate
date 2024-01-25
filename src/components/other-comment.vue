@@ -2,11 +2,12 @@
   <div class="bg-light p-3">
     <!-- PERSON WHO COMMENT BUTTON-->
     <button class="btn mb-2 d-flex gap-2 align-items-center">
-      <img
-        src="@/assets/images/bg.png"
+      <VLazyImage
+        src="https://source.unsplash.com/random/300×300 "
+        src-placeholder="/spinner.svg"
         class="rounded-circle"
         width="24"
-        loading="lazy"
+        height="24"
       />
       <div class="d-flex flex-column align-items-start">
         <span class="text-sm">Friend 1</span>

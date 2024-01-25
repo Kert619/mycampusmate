@@ -2,11 +2,12 @@
   <div>
     <!-- COMMENT INPUT -->
     <div class="d-flex gap-3 mb-3">
-      <img
-        src="@/assets/images/bg.png"
-        class="rounded-circle align-self-start"
+      <VLazyImage
+        src="https://source.unsplash.com/random/300×300 "
+        src-placeholder="/spinner.svg"
+        class="rounded-circle"
         width="24"
-        loading="lazy"
+        height="24"
       />
       <textarea
         class="form-control overflow-y-hidden"

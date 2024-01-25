@@ -4,14 +4,19 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
 import { createPinia } from "pinia";
+import VLazyImage from "v-lazy-image";
 
 // CREATE VUE APP INSTANCE
 const app = createApp(App);
+
+app.component("VLazyImage", VLazyImage);
+
 // CREATE PINIA INSTANCE FOR GLOBAL STATE MANAGEMENT
 const pinia = createPinia();
 
 // USE PINIA FOR GLOBAL STATE MANAGEMENT
 app.use(pinia);
+
 // USE ROUTER FOR MULTI PAGE NAVIGATION
 app.use(router);
 

@@ -3,7 +3,7 @@
   <nav class="navbar navbar-expand-lg bg-white shadow">
     <div class="container">
       <RouterLink to="/student/dashboard" class="navbar-brand">
-        <img src="@/assets/images/logo.png" width="200" loading="lazy" />
+        <VLazyImage src="/logo.png" width="200" />
       </RouterLink>
       <button
         class="navbar-toggler"

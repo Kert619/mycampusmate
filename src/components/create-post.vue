@@ -3,11 +3,12 @@
     <div class="mb-3">
       <!-- USER WHO POST BUTTON-->
       <button class="btn mb-2 d-flex gap-2 align-items-center">
-        <img
-          src="@/assets/images/bg.png"
+        <VLazyImage
+          src="https://source.unsplash.com/random/300×300 "
+          src-placeholder="/spinner.svg"
           class="rounded-circle"
           width="24"
-          loading="lazy"
+          height="24"
         />
         <span class="text-sm">Sample Student</span>
       </button>

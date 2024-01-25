@@ -3,7 +3,7 @@
     <!-- WE ADD .PREVENT TO AVOID RELOADING THE PAGE WHEN THE FORM SUBMITS -->
     <form class="my-5 p-5 border" @submit.prevent="submitForm">
       <div class="d-flex justify-content-center mb-3">
-        <img src="@/assets/images/logo.png" width="300" />
+        <VLazyImage src="/logo.png" width="300" />
       </div>
       <div class="mb-3">
         <label class="form-label">Username</label>

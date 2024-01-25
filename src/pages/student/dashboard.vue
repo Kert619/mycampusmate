@@ -114,6 +114,13 @@
             <FriendPost></FriendPost>
             <FriendPost></FriendPost>
             <FriendPost></FriendPost>
+            <VLazyImage
+              src="https://source.unsplash.com/random/200×200 "
+              src-placeholder="/spinner.svg"
+              class="rounded-circle"
+              width="200"
+              height="200"
+            />
           </div>
         </div>
 
@@ -129,6 +136,11 @@
             </div>
 
             <div class="flex-grow-1 overflow-auto">
+              <FriendList></FriendList>
+              <FriendList></FriendList>
+              <FriendList></FriendList>
+              <FriendList></FriendList>
+              <FriendList></FriendList>
               <FriendList></FriendList>
             </div>
           </div>

@@ -5,3 +5,9 @@
 </template>
 
 <script setup></script>
+
+<style>
+img {
+  object-fit: cover;
+}
+</style>
