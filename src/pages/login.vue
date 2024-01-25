@@ -40,7 +40,7 @@ import { useAuthStore } from "@/stores/authStore";
 const router = useRouter();
 const authStore = useAuthStore();
 
-// THIS IS THE USER DATA OR INPUT WILL BE STORED AND EVENTUALLY WILL BE SENT INTO THE SERVER
+// THIS IS WHERE THE USER INPUT WILL BE STORED AND EVENTUALLY WILL BE SENT INTO THE API
 const form = ref({
   username: "",
   password: "",

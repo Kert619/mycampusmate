@@ -37,10 +37,23 @@
               Users</RouterLink
             >
           </li>
+          <li class="nav-item">
+            <button class="btn nav-link" @click="logout">Logout</button>
+          </li>
         </ul>
       </div>
     </div>
   </nav>
 </template>
 
-<script setup></script>
+<script setup>
+import api from "@/http/api";
+
+const logout = async () => {
+  const response = await api.get("/jwt/logout/");
+  if (response.status === 200) {
+    localStorage.removeItem("token");
+    window.location.reload();
+  }
+};
+</script>

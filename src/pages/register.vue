@@ -23,7 +23,15 @@
         <input type="password" class="form-control" v-model="form.password" />
       </div>
 
+      <!-- SHOW ONLY THIS SUCCESS MESSAGE WHEN SUCCESSFULLY REGISTERED -->
+      <div class="alert alert-success" role="alert" v-if="showSuccess">
+        <span class="fw-bold">Successfully registered!</span> You will have to
+        wait for the confirmation of your account from the admin before you can
+        login.
+      </div>
+
       <button type="submit" class="btn btn-primary">Register</button>
+      <RouterLink to="/login" class="btn btn-secondary ms-2">Back</RouterLink>
     </form>
   </div>
 </template>
@@ -31,11 +39,8 @@
 <script setup>
 import api from "@/http/api";
 import { ref } from "vue";
-import { useRouter } from "vue-router";
 
-const router = useRouter();
-
-// THIS IS THE USER DATA OR INPUT WILL BE STORED AND EVENTUALLY WILL BE SENT INTO THE API
+// THIS IS WHERE THE USER INPUT WILL BE STORED AND EVENTUALLY WILL BE SENT INTO THE API
 const form = ref({
   first_name: "",
   last_name: "",
@@ -45,12 +50,20 @@ const form = ref({
   usertype: "student",
 });
 
+const showSuccess = ref(false);
+
 // SUBMIT THE FORM
 const submitForm = async () => {
   const response = await api.post("/jwt/register", form.value);
-  // REDIRECT THE USER TO LOGIN PAGE WHEN SUCCESSFULLY REGISTERED
+  // CLEAR THE INPUTS WHEN SUCCESSFULLY REGISTERED
   if (response.status === 200) {
-    router.push("/");
+    form.value.first_name = "";
+    form.value.last_name = "";
+    form.value.middle_name = "";
+    form.value.username = "";
+    form.value.password = "";
+    form.value.usertype = "";
+    showSuccess.value = true;
   }
 };
 </script>

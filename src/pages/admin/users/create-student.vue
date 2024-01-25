@@ -59,7 +59,7 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 
-// THIS IS THE USER DATA OR INPUT WILL BE STORED AND EVENTUALLY WILL BE SENT INTO THE API
+// THIS IS WHERE THE USER INPUT WILL BE STORED AND EVENTUALLY WILL BE SENT INTO THE API
 const form = ref({
   first_name: "",
   last_name: "",

@@ -6,6 +6,7 @@
         src="@/assets/images/bg.png"
         class="rounded-circle align-self-start"
         width="24"
+        loading="lazy"
       />
       <textarea
         class="form-control overflow-y-hidden"

@@ -3,7 +3,7 @@
   <nav class="navbar navbar-expand-lg bg-white shadow">
     <div class="container">
       <RouterLink to="/student/dashboard" class="navbar-brand">
-        <img src="@/assets/images/logo.png" width="200" />
+        <img src="@/assets/images/logo.png" width="200" loading="lazy" />
       </RouterLink>
       <button
         class="navbar-toggler"
@@ -24,7 +24,10 @@
               href="https://www.coderstribe.net"
               target="_blank"
             >
-              <img src="@/assets/images/coderstribe.png" height="60"
+              <img
+                src="@/assets/images/coderstribe.png"
+                height="60"
+                loading="lazy"
             /></a>
           </li>
         </ul>
