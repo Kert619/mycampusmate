@@ -51,11 +51,11 @@ const errorMsg = ref(null);
 
 // SUBMIT THE FORM
 const submitForm = async () => {
-  const response = await api.post("/jwt/login", form.value);
-  const token = response.data.token;
+  try {
+    const response = await api.post("/jwt/login", form.value);
 
-  if (token) {
     // STORE THE TOKEN IN LOCAL STORAGE IF LOGIN SUCCESS
+    const token = response.data.token;
     localStorage.setItem("token", token);
     authStore.token = token;
 
@@ -66,9 +66,8 @@ const submitForm = async () => {
       // REDIRECT TO STUDENT DASHBOARD IF USERTYPE IS STUDENT
       router.push("/student/dashboard");
     }
-  } else {
-    // POPULATE ERROR MESSAGE IF LOGIN FAILED
-    errorMsg.value = response.data;
+  } catch (error) {
+    errorMsg.value = error.response.data;
   }
 };
 </script>
