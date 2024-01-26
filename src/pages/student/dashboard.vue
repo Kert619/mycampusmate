@@ -21,7 +21,7 @@
               <div class="d-grid gap-2">
                 <!-- HOME BUTTON -->
                 <button
-                  class="btn btn-outline-primary text-start d-flex align-items-center gap-2"
+                  class="btn btn-light text-start d-flex align-items-center gap-2"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -35,11 +35,11 @@
                       d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"
                     />
                   </svg>
-                  <span>Home</span>
+                  <span>Newsfeed</span>
                 </button>
                 <!-- MY TIMELINE BUTTON -->
                 <button
-                  class="btn btn-outline-primary text-start d-flex align-items-center gap-2"
+                  class="btn btn-light text-start d-flex align-items-center gap-2"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -56,11 +56,12 @@
                       d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"
                     />
                   </svg>
-                  <span>My Timeline</span>
+                  <span>Timeline</span>
                 </button>
                 <!-- PROFILE BUTTON -->
-                <button
-                  class="btn btn-outline-primary text-start d-flex align-items-center gap-2"
+                <RouterLink
+                  :to="`/student/${authStore.userInfo.user_id}/profile`"
+                  class="btn btn-light text-start d-flex align-items-center gap-2"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -75,11 +76,11 @@
                     />
                   </svg>
                   <span>Profile</span>
-                </button>
+                </RouterLink>
                 <!-- LOGOUT BUTTON -->
                 <button
                   @click="logout"
-                  class="btn btn-outline-primary text-start d-flex align-items-center gap-2"
+                  class="btn btn-light text-start d-flex align-items-center gap-2"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -130,11 +131,6 @@
 
             <div class="flex-grow-1 overflow-auto">
               <FriendList></FriendList>
-              <FriendList></FriendList>
-              <FriendList></FriendList>
-              <FriendList></FriendList>
-              <FriendList></FriendList>
-              <FriendList></FriendList>
             </div>
           </div>
         </div>
@@ -149,12 +145,18 @@ import FriendList from "@/components/friend-list.vue";
 import CreatePost from "@/components/create-post.vue";
 import FriendPost from "@/components/friend-post.vue";
 import api from "@/http/api";
+import { useRouter } from "vue-router";
+import { useAuthStore } from "@/stores/authStore";
+
+const router = useRouter();
+const authStore = useAuthStore();
 
 const logout = async () => {
   const response = await api.get("/jwt/logout/");
   if (response.status === 200) {
     localStorage.removeItem("token");
-    window.location.reload();
+    authStore.token = null;
+    router.push("/login");
   }
 };
 </script>

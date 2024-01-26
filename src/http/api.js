@@ -2,7 +2,7 @@ import axios from "axios";
 
 // CREATE AXIOS INSTANCE
 const api = axios.create({
-  baseURL: "https://mycampusmate-be.fly.dev",
+  baseURL: "http://localhost:1999",
 });
 
 // INTERCEPT REQUEST, BEFORE SENDING THE REQUEST, ADD TOKEN HEADER FIRST IF TOKEN EXIST

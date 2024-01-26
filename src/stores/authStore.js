@@ -3,5 +3,6 @@ import { ref } from "vue";
 
 export const useAuthStore = defineStore("auth", () => {
   const token = ref(localStorage.getItem("token"));
-  return { token };
+  const userInfo = ref(null);
+  return { token, userInfo };
 });
