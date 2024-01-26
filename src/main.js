@@ -18,11 +18,15 @@ const pinia = createPinia();
 // USE PINIA FOR GLOBAL STATE MANAGEMENT
 app.use(pinia);
 
-// USE ROUTER FOR MULTI PAGE NAVIGATION
-app.use(router);
+// ASYNCHRONOUSLY LOAD USER INFO BEFORE MOUNTING APP
+(async () => {
+  await loadUser.install();
 
-// LOAD USER INFO
-app.use(loadUser);
+  // USE ROUTER FOR MULTI PAGE NAVIGATION
+  app.use(router);
 
-// MOUNT THE PAGE TO DIV WITH AN ID OF APP
-app.mount("#app");
+  document.querySelector(".loader").remove();
+
+  // MOUNT THE PAGE TO DIV WITH AN ID OF APP
+  app.mount("#app");
+})();

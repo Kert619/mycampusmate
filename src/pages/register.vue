@@ -158,6 +158,11 @@
           can login.
         </div>
 
+        <!-- SHOW ONLY THIS ERROR MESSAGE WHEN REGISTER FAILED -->
+        <div class="alert alert-danger" role="alert" v-if="errorMsg">
+          <span class="fw-bold">{{ errorMsg }}</span>
+        </div>
+
         <button type="submit" class="btn btn-danger">Register</button>
         <RouterLink to="/login" class="btn btn-secondary ms-2">Back</RouterLink>
       </form>
@@ -190,14 +195,16 @@ const form = ref({
 });
 
 const showSuccess = ref(false);
+const errorMsg = ref(null);
 
 // SUBMIT THE FORM
 const submitForm = async () => {
-  const response = await api.post("/jwt/register/", form.value, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
-  // CLEAR THE INPUTS WHEN SUCCESSFULLY REGISTERED
-  if (response.status === 200) {
+  try {
+    const response = await api.post("/jwt/register/", form.value, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    // CLEAR THE INPUTS WHEN SUCCESSFULLY REGISTERED
     form.value.first_name = "";
     form.value.last_name = "";
     form.value.middle_name = "";
@@ -214,6 +221,8 @@ const submitForm = async () => {
     form.value.password = "";
     form.value.confirm = false;
     showSuccess.value = true;
+  } catch (error) {
+    errorMsg.value = error.response.data;
   }
 };
 

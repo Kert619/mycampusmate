@@ -9,13 +9,13 @@
       <div class="p-3 flex-grow-1">
         <h3 class="mb-3">Profile</h3>
         <div class="container">
-          <div class="row">
+          <div class="row g-3">
             <div class="col-md-4">
               <div
                 class="border p-5 d-flex align-items-center flex-column gap-3 bg-white mb-3"
               >
                 <img
-                  src="/profile.png"
+                  :src="filePath"
                   width="150"
                   height="150"
                   class="border rounded-circle"
@@ -35,10 +35,15 @@
                 <p class="fw-bold text-secondary p-2">Change Password</p>
 
                 <div class="p-3">
-                  <form>
+                  <form @submit.prevent="updateProfile">
                     <div class="mb-3">
                       <label class="form-label">New Password</label>
-                      <input type="password" class="form-control" required />
+                      <input
+                        type="password"
+                        class="form-control"
+                        required
+                        v-model="user.password"
+                      />
                     </div>
                     <button type="submit" class="btn btn-primary">
                       Change Password
@@ -52,15 +57,25 @@
                 <p class="fw-bold text-secondary p-2 mb-3">User Settings</p>
 
                 <div class="p-3">
-                  <form>
+                  <form @submit.prevent="updateProfile">
                     <div class="row mb-3">
                       <div class="col-md-6">
                         <label class="form-label">Username</label>
-                        <input type="text" class="form-control" required />
+                        <input
+                          type="text"
+                          class="form-control"
+                          required
+                          v-model="user.username"
+                        />
                       </div>
                       <div class="col-md-6">
                         <label class="form-label">Email</label>
-                        <input type="email" class="form-control" required />
+                        <input
+                          type="email"
+                          class="form-control"
+                          required
+                          v-model="user.email"
+                        />
                       </div>
                     </div>
                     <button type="submit" class="btn btn-primary">
@@ -74,19 +89,34 @@
                 <p class="fw-bold text-secondary p-2 mb-3">Contact Settings</p>
 
                 <div class="p-3">
-                  <form>
-                    <div class="row mb-3">
+                  <form @submit.prevent="updateProfile">
+                    <div class="row g-3 mb-3">
                       <div class="col-12">
                         <label class="form-label">Address</label>
-                        <input type="text" class="form-control" required />
+                        <input
+                          type="text"
+                          class="form-control"
+                          required
+                          v-model="user.address"
+                        />
                       </div>
                       <div class="col-md-6">
                         <label class="form-label">Contact</label>
-                        <input type="text" class="form-control" required />
+                        <input
+                          type="text"
+                          class="form-control"
+                          required
+                          v-model="user.contact_num"
+                        />
                       </div>
                       <div class="col-md-6">
                         <label class="form-label">Emergency Contact</label>
-                        <input type="text" class="form-control" required />
+                        <input
+                          type="text"
+                          class="form-control"
+                          required
+                          v-model="user.emergency_contact"
+                        />
                       </div>
                     </div>
                     <button type="submit" class="btn btn-primary">
@@ -108,23 +138,53 @@ import AdminNav from "@/components/admin-nav.vue";
 import AdminSideBar from "@/components/admin-sidebar.vue";
 import { ref } from "vue";
 import { useAuthStore } from "@/stores/authStore";
+import api from "@/http/api";
+import Swal from "sweetalert2";
 
+const authStore = useAuthStore();
 const imageRef = ref(null);
+const user = ref({
+  username: authStore.userInfo.user_admin.username,
+  email: authStore.userInfo.user_admin.email,
+  address: authStore.userInfo.address,
+  contact_num: authStore.userInfo.contact_num,
+  emergency_contact: authStore.userInfo.emergency_contact,
+  password: "",
+  file: "",
+});
 
-const user = ref({});
+const filePath = `${import.meta.env.VITE_API_URL}${
+  authStore.userInfo.admin_profile.file_path
+}`;
 
-const fileSelected = (e) => {
+const fileSelected = async (e) => {
   const input = e.target;
 
   if (!input.files || input.files.length === 0) return;
 
   const reader = new FileReader();
   const file = input.files[0];
+  user.value.file = file;
+  await updateProfile();
 
   reader.onload = (result) => {
     imageRef.value.src = result.target.result;
   };
 
   reader.readAsDataURL(file);
+};
+
+const updateProfile = async () => {
+  const response = await api.put("/admin/update/", user.value, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+
+  authStore.userInfo = response.data;
+
+  await Swal.fire({
+    title: "Success",
+    text: "User profile updated successfully",
+    icon: "success",
+  });
 };
 </script>
