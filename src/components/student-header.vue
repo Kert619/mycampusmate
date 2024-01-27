@@ -24,10 +24,7 @@
               href="https://www.coderstribe.net"
               target="_blank"
             >
-              <img
-                src="@/assets/images/coderstribe.png"
-                height="60"
-                loading="lazy"
+              <img src="/coderstribe.png" height="60" loading="lazy"
             /></a>
           </li>
         </ul>

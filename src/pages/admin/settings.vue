@@ -136,26 +136,38 @@
 <script setup>
 import AdminNav from "@/components/admin-nav.vue";
 import AdminSideBar from "@/components/admin-sidebar.vue";
-import { ref } from "vue";
-import { useAuthStore } from "@/stores/authStore";
+import { onMounted, ref } from "vue";
 import api from "@/http/api";
 import Swal from "sweetalert2";
 
-const authStore = useAuthStore();
 const imageRef = ref(null);
 const user = ref({
-  username: authStore.userInfo.user_admin.username,
-  email: authStore.userInfo.user_admin.email,
-  address: authStore.userInfo.address,
-  contact_num: authStore.userInfo.contact_num,
-  emergency_contact: authStore.userInfo.emergency_contact,
+  username: "",
+  email: "",
+  address: "",
+  contact_num: "",
+  emergency_contact: "",
   password: "",
   file: "",
 });
 
-const filePath = `${import.meta.env.VITE_API_URL}${
-  authStore.userInfo.admin_profile.file_path
-}`;
+const filePath = ref("");
+
+const loadUser = async () => {
+  const response = await api.get("/jwt/getOne/");
+  user.value.username = response.data.user_admin.username;
+  user.value.email = response.data.user_admin.email;
+  user.value.address = response.data.address;
+  user.value.contact_num = response.data.contact_num;
+  user.value.emergency_contact = response.data.emergency_contact;
+  filePath.value = `${import.meta.env.VITE_API_URL}${
+    response.data.admin_profile?.file_path
+  }`;
+};
+
+onMounted(async () => {
+  await loadUser();
+});
 
 const fileSelected = async (e) => {
   const input = e.target;
@@ -178,8 +190,6 @@ const updateProfile = async () => {
   const response = await api.put("/admin/update/", user.value, {
     headers: { "Content-Type": "multipart/form-data" },
   });
-
-  authStore.userInfo = response.data;
 
   await Swal.fire({
     title: "Success",

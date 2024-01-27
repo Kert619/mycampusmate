@@ -43,10 +43,8 @@
 import api from "@/http/api";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { useAuthStore } from "@/stores/authStore";
 
 const router = useRouter();
-const authStore = useAuthStore();
 
 // THIS IS WHERE THE USER INPUT WILL BE STORED AND EVENTUALLY WILL BE SENT INTO THE API
 const form = ref({
@@ -65,10 +63,6 @@ const submitForm = async () => {
     // STORE THE TOKEN IN LOCAL STORAGE IF LOGIN SUCCESS
     const token = response.data.token;
     localStorage.setItem("token", token);
-    authStore.token = token;
-
-    const res = await api.get("/jwt/getOne/");
-    authStore.userInfo = res.data;
 
     if (response.data.data.usertype === 1) {
       // REDIRECT TO ADMIN DASHBOARD IF USERTYPE IS ADMIN
@@ -78,7 +72,6 @@ const submitForm = async () => {
       router.push("/student/newsfeed");
     }
   } catch (error) {
-    console.log(error);
     errorMsg.value = error.response.data;
   }
 };

@@ -22,7 +22,11 @@ const router = createRouter({
     },
     {
       path: "/admin/user-applications",
-      component: () => import("@/pages/admin/applications.vue"),
+      component: () => import("@/pages/admin/applications/index.vue"),
+    },
+    {
+      path: "/admin/user-applications/:id",
+      component: () => import("@/pages/admin/applications/[id].vue"),
     },
     {
       path: "/admin/settings",
@@ -39,10 +43,6 @@ const router = createRouter({
     {
       path: "/student/:id/profile",
       component: () => import("@/pages/student/edit-profile.vue"),
-    },
-    {
-      path: "/:pathMatch(.*)*",
-      component: () => import("@/pages/not-found.vue"),
     },
   ],
 });

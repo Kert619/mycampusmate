@@ -2,7 +2,7 @@ import axios from "axios";
 
 // CREATE AXIOS INSTANCE
 const api = axios.create({
-  baseURL: "http://localhost:1999",
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
 // INTERCEPT REQUEST, BEFORE SENDING THE REQUEST, ADD TOKEN HEADER FIRST IF TOKEN EXIST

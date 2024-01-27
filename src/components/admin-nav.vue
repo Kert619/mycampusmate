@@ -89,16 +89,13 @@
 <script setup>
 import api from "@/http/api";
 import { useRouter } from "vue-router";
-import { useAuthStore } from "@/stores/authStore";
 
 const router = useRouter();
-const authStore = useAuthStore();
 
 const logout = async () => {
   const response = await api.get("/jwt/logout/");
   if (response.status === 200) {
     localStorage.removeItem("token");
-    authStore.token = null;
     router.push("/login");
   }
 };

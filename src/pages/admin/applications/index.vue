@@ -21,7 +21,7 @@
                   <th scope="col">Name</th>
                   <th scope="col">Age</th>
                   <th scope="col">Address</th>
-                  <th scope="col">Student ID</th>
+                  <th scope="col">Student ID Num</th>
                   <th scope="col">Status</th>
                   <th scope="col">Actions</th>
                 </tr>
@@ -31,16 +31,16 @@
                   <th scope="row">{{ idx + 1 }}</th>
                   <td>
                     {{
-                      user.first_name +
+                      user.student.first_name +
                       " " +
-                      user.middle_name +
+                      user.student.middle_name +
                       " " +
-                      user.last_name
+                      user.student.last_name
                     }}
                   </td>
-                  <td>{{ user.age }}</td>
-                  <td>{{ user.address }}</td>
-                  <td></td>
+                  <td>{{ user.student.age }}</td>
+                  <td>{{ user.student.address }}</td>
+                  <td>{{ user.student.student_num }}</td>
                   <td>
                     <!-- 0 = PENDING, 1 = APPROVED, 2 = REJECTED -->
                     <!-- DISPLAY PENDING BADGE IF USER STATUS IS PENDING -->
@@ -64,7 +64,11 @@
                   </td>
                   <td>
                     <div class="d-flex gap-2">
-                      <button class="btn btn-primary">View</button>
+                      <RouterLink
+                        :to="`/admin/user-applications/${user.id}`"
+                        class="btn btn-primary"
+                        >View</RouterLink
+                      >
                       <!-- DISABLE BUTTON IF USER IS APPROVED OR REJECTED -->
                       <button
                         type="button"
