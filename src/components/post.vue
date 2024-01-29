@@ -135,22 +135,11 @@
       <CreateComment></CreateComment>
       <hr />
     </div>
-
-    <!-- OTHER PEOPLE COMMENTS -->
-    <!-- <p>Comments (5)</p>
-    <div class="mb-3 d-flex flex-column gap-2">
-      <OtherComment></OtherComment>
-      <OtherComment></OtherComment>
-      <OtherComment></OtherComment>
-      <OtherComment></OtherComment>
-      <OtherComment></OtherComment>
-    </div> -->
   </div>
 </template>
 
 <script setup>
 import CreateComment from "@/components/create-comment.vue";
-import OtherComment from "@/components/other-comment.vue";
 import api from "@/http/api";
 import { ref } from "vue";
 
