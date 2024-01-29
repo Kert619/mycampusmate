@@ -11,7 +11,6 @@
         <div class="container">
           <VLazyImage
             :src="filePath"
-            src-placeholder="/spinner.svg"
             width="100"
             height="100"
             class="rounded-circle border mb-3"

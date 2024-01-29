@@ -2,9 +2,9 @@
   <!-- STUDENT PAGE HEADER -->
   <nav class="navbar navbar-expand-lg shadow">
     <div class="container">
-      <RouterLink to="/student/dashboard" class="navbar-brand">
+      <span class="navbar-brand">
         <VLazyImage src="/logo.png" width="200" />
-      </RouterLink>
+      </span>
       <button
         class="navbar-toggler"
         type="button"
@@ -19,13 +19,7 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <a
-              class="nav-link"
-              href="https://www.coderstribe.net"
-              target="_blank"
-            >
-              <img src="/coderstribe.png" height="60" loading="lazy"
-            /></a>
+            <span> <img src="/about.png" height="60" loading="lazy" /></span>
           </li>
         </ul>
       </div>

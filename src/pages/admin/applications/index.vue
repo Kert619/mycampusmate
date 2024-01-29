@@ -10,11 +10,7 @@
         <h3 class="mb-3">User Applications</h3>
         <div class="container">
           <div class="table-responsive">
-            <!-- DISPLAY LOADING IF FETCHING IS NOT DONE -->
-            <div v-if="loading">LOADING...</div>
-
-            <!-- DISPLAY THIS TABLE IF FETCHING IS DONE -->
-            <table class="table" v-else-if="users">
+            <table class="table">
               <thead>
                 <tr>
                   <th scope="col">#</th>
@@ -104,15 +100,12 @@ import AdminNav from "@/components/admin-nav.vue";
 import AdminSideBar from "@/components/admin-sidebar.vue";
 import { onMounted, ref } from "vue";
 
-const loading = ref(false);
 const users = ref(null);
 
 // GET ALL USERS
 const loadUsers = async () => {
-  loading.value = true;
   const response = await api.get("/admin/getAllStudent/");
   users.value = response.data;
-  loading.value = false;
 };
 
 // LOAD USERS WHEN PAGE LOADS

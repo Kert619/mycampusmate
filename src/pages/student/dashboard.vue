@@ -8,100 +8,47 @@
         <div class="col h-100 overflow-auto">
           <div class="p-3 h-100 overflow-auto d-flex flex-column">
             <!-- SEARCH PERSON INPUT -->
-            <div class="mb-3">
+            <div class="mb-3 position-relative">
               <input
                 type="text"
                 class="form-control"
                 placeholder="Search person here"
+                v-model="searchInput"
               />
+
+              <!-- SEARCH RESULT -->
+              <div
+                class="mb-3 bg-white position-absolute border"
+                style="z-index: 9; width: 100%; max-height: 400px"
+                v-if="searchResult.length > 0"
+              >
+                <div class="d-grid column gap-2">
+                  <button
+                    @click="searchStudent(student.student.id)"
+                    class="btn d-flex justify-content-start align-items-center gap-2"
+                    v-for="student in searchResult"
+                  >
+                    <VLazyImage
+                      :src="`${apiUrl}${student.student.student_profile.file_path}${student.student.student_profile.file_rand_name}`"
+                      class="rounded-circle"
+                      width="24"
+                      height="24"
+                    />
+                    <span class="text-sm">{{
+                      `${student.student.first_name} ${student.student.last_name}`
+                    }}</span>
+                  </button>
+                </div>
+              </div>
             </div>
 
             <!-- NAVIGATION BUTTONS -->
             <div class="flex-grow-1 overflow-auto">
-              <div class="d-grid gap-2">
-                <!-- HOME BUTTON -->
-                <button
-                  class="btn btn-light text-start d-flex align-items-center gap-2"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    class="bi bi-house"
-                    viewBox="0 0 16 16"
-                  >
-                    <path
-                      d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"
-                    />
-                  </svg>
-                  <span>Newsfeed</span>
-                </button>
-                <!-- MY TIMELINE BUTTON -->
-                <button
-                  class="btn btn-light text-start d-flex align-items-center gap-2"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    class="bi bi-calendar-range"
-                    viewBox="0 0 16 16"
-                  >
-                    <path
-                      d="M9 7a1 1 0 0 1 1-1h5v2h-5a1 1 0 0 1-1-1M1 9h4a1 1 0 0 1 0 2H1z"
-                    />
-                    <path
-                      d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"
-                    />
-                  </svg>
-                  <span>Timeline</span>
-                </button>
-                <!-- PROFILE BUTTON -->
-                <RouterLink
-                  :to="`/student/${authStore.userInfo.user_id}/profile`"
-                  class="btn btn-light text-start d-flex align-items-center gap-2"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    class="bi bi-person"
-                    viewBox="0 0 16 16"
-                  >
-                    <path
-                      d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"
-                    />
-                  </svg>
-                  <span>Profile</span>
-                </RouterLink>
-                <!-- LOGOUT BUTTON -->
-                <button
-                  @click="logout"
-                  class="btn btn-light text-start d-flex align-items-center gap-2"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    class="bi bi-box-arrow-left"
-                    viewBox="0 0 16 16"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0z"
-                    />
-                    <path
-                      fill-rule="evenodd"
-                      d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708z"
-                    />
-                  </svg>
-                  <span>Logout</span>
-                </button>
-              </div>
+              <StudentSidebar
+                @newsfeed-clicked="refreshPosts"
+                @timeline-clicked="searchStudent(authStudent.id)"
+                @logout-clicked="logout"
+              ></StudentSidebar>
             </div>
           </div>
         </div>
@@ -110,17 +57,47 @@
         <div
           class="col col-6 overflow-auto h-100 overflow-auto bg-body-secondary"
         >
-          <div class="p-3 h-100 overflow-auto d-flex flex-column gap-3">
-            <CreatePost></CreatePost>
-            <FriendPost></FriendPost>
-            <FriendPost></FriendPost>
-            <FriendPost></FriendPost>
+          <div
+            class="p-3 h-100 overflow-auto d-flex flex-column gap-3"
+            ref="newsfeedRef"
+          >
+            <!-- DISPLAY CREATE POST IF USER DID NOT SEARCH A STUDENT -->
+            <CreatePost
+              v-if="authStudent && !currentStudent"
+              :auth-student-id="authStudent.id"
+              :student-name="`${authStudent.first_name} ${authStudent.last_name}`"
+              :profile="`${apiUrl}${authStudent.student_profile.file_path}${authStudent.student_profile.file_rand_name}`"
+              @post-created="getPosts"
+            ></CreatePost>
+            <!-- DISPLAY THIS POSTS IF USER DID NOT SEARCH A STUDENT -->
+            <template v-if="posts.length > 0 && authStudent && !currentStudent">
+              <Post
+                v-for="post in posts"
+                :post="post"
+                :isOwnPost="post.student_id == authStudent.id"
+                @post-deleted="refreshPosts"
+              ></Post>
+            </template>
+            <!-- TIMELINE -->
+
+            <!-- DISPLAY THIS TIMELINE IF USER SEARCH A STUDENT -->
+            <template v-if="currentStudent">
+              <Timeline
+                :student="currentStudent"
+                :is-own-timeline="currentStudent.id == authStudent.id"
+                :auth-student-id="authStudent.id"
+                @postCreatedTimeline="refreshSearchStudent"
+                @postDeletedTimeline="refreshSearchStudent"
+                @add-friend="addFriend"
+              ></Timeline>
+            </template>
           </div>
         </div>
 
         <!-- RIGHT SIDEBAR -->
         <div class="col h-100 overflow-auto">
           <div class="p-3 h-100 overflow-auto d-flex flex-column">
+            <!-- SEARCH FRIEND INPUT -->
             <div class="mb-3">
               <input
                 type="text"
@@ -141,19 +118,87 @@
 
 <script setup>
 import StudentHeader from "@/components/student-header.vue";
+import StudentSidebar from "@/components/student-sidebar.vue";
 import FriendList from "@/components/friend-list.vue";
 import CreatePost from "@/components/create-post.vue";
-import FriendPost from "@/components/friend-post.vue";
+import Post from "@/components/post.vue";
+import Timeline from "@/components/timeline.vue";
 import api from "@/http/api";
+import { onMounted, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 
+const apiUrl = import.meta.env.VITE_API_URL;
 const router = useRouter();
+const newsfeedRef = ref(null);
+const authStudent = ref(null);
+const posts = ref([]);
+const students = ref([]);
+const searchInput = ref("");
+const searchResult = ref([]);
+const currentStudent = ref(null);
+
+watch(searchInput, () => {
+  if (searchInput.value) {
+    searchResult.value = students.value.filter((x) => {
+      const fullname =
+        `${x.student.first_name} ${x.student.last_name}`.toLowerCase();
+      return fullname.includes(searchInput.value);
+    });
+  } else {
+    searchResult.value = [];
+  }
+});
+
+onMounted(async () => {
+  await getCurrentUser();
+  await getStudents();
+  await getPosts();
+});
+
+const getCurrentUser = async () => {
+  const response = await api.get("/student/getOneStudent/");
+  authStudent.value = response.data;
+};
+
+const getPosts = async () => {
+  const response = await api.get("/post/get");
+  posts.value = response.data;
+};
+
+const getStudents = async () => {
+  const response = await api.get("/admin/getAllStudent/");
+  students.value = response.data;
+};
+
+const searchStudent = async (id) => {
+  const response = await api.get(`/post/getOne/?id=${id}`);
+  currentStudent.value = response.data;
+  searchInput.value = "";
+};
+
+const refreshPosts = async () => {
+  currentStudent.value = null;
+  await getPosts(true);
+};
+
+const refreshSearchStudent = async (id) => {
+  await searchStudent(id, true);
+};
+
+const addFriend = async (studentId) => {
+  // const response = await api.put("/student/addFriend/", { id: studentId });
+  // console.log(response);
+};
 
 const logout = async () => {
   const response = await api.get("/jwt/logout/");
-  if (response.status === 200) {
-    localStorage.removeItem("token");
-    router.push("/login");
-  }
+  localStorage.removeItem("token");
+  router.push("/login");
 };
 </script>
+
+<style scoped>
+.text-sm {
+  font-size: 0.8rem;
+}
+</style>

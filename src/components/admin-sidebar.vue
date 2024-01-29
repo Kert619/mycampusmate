@@ -56,7 +56,10 @@
         </RouterLink>
       </li>
       <li>
-        <a href="#" class="nav-link link-dark d-flex align-items-center gap-2">
+        <RouterLink
+          to="/admin/messages"
+          class="nav-link link-dark d-flex align-items-center gap-2"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -73,7 +76,7 @@
             />
           </svg>
           Message
-        </a>
+        </RouterLink>
       </li>
       <li>
         <RouterLink

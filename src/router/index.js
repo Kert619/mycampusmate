@@ -37,12 +37,16 @@ const router = createRouter({
       component: () => import("@/pages/admin/community.vue"),
     },
     {
-      path: "/student/newsfeed",
-      component: () => import("@/pages/student/dashboard.vue"),
+      path: "/admin/messages",
+      component: () => import("@/pages/admin/messages/index.vue"),
     },
     {
-      path: "/student/:id/profile",
-      component: () => import("@/pages/student/edit-profile.vue"),
+      path: "/admin/messages/:id",
+      component: () => import("@/pages/admin/messages/[id].vue"),
+    },
+    {
+      path: "/student/newsfeed",
+      component: () => import("@/pages/student/dashboard.vue"),
     },
   ],
 });

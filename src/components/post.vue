@@ -1,26 +1,68 @@
 <template>
-  <div class="p-3 rounded bg-white">
+  <div class="p-3 rounded bg-white position-relative">
+    <button
+      v-if="isOwnPost"
+      class="btn position-absolute"
+      style="right: 10px; top: 10px"
+      @click="deletePost"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        fill="currentColor"
+        class="bi bi-x-square"
+        viewBox="0 0 16 16"
+      >
+        <path
+          d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"
+        />
+        <path
+          d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"
+        />
+      </svg>
+    </button>
     <!-- PERSON WHO POST BUTTON-->
     <button class="btn mb-2 d-flex gap-2 align-items-center">
       <VLazyImage
-        src="https://source.unsplash.com/random/300×300 "
-        src-placeholder="/spinner.svg"
+        :src="`${apiUrl}${post.studentpost.student_profile.file_path}${post.studentpost.student_profile.file_rand_name}`"
         class="rounded-circle"
         width="24"
         height="24"
       />
       <div class="d-flex flex-column align-items-start">
-        <span class="text-sm">Friend 1</span>
-        <span class="text-xs text-secondary">Jan. 24, 2024 12:04 pm</span>
+        <span class="text-sm">{{
+          `${post.studentpost.first_name} ${post.studentpost.last_name}`
+        }}</span>
+        <span class="text-xs text-secondary">{{
+          new Date(post.createdAt).toLocaleString("en-PH", {
+            month: "short",
+            day: "2-digit",
+            year: "numeric",
+            hour12: true,
+            hour: "numeric",
+            minute: "2-digit",
+          })
+        }}</span>
       </div>
     </button>
 
+    <!-- POST IMAGE -->
+    <div class="mb-3 border" v-if="post.post_files">
+      <VLazyImage
+        class="w-100 object-fit-cover"
+        :src="`${apiUrl}${post.post_files.file_path}${post.post_files.file_rand_name}`"
+      />
+    </div>
+
     <!-- POST TEXT CONTENT-->
-    <p>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga doloremque
-      aut dolore atque consequatur alias fugit nesciunt necessitatibus autem rem
-      velit fugiat, unde sed ut modi corporis et dolores delectus.
-    </p>
+    <pre
+      style="
+        white-space: pre-wrap;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      "
+      >{{ post.post_description }}</pre
+    >
     <hr />
 
     <!-- ACTION BUTTONS -->
@@ -95,24 +137,44 @@
     </div>
 
     <!-- OTHER PEOPLE COMMENTS -->
-    <p>Comments (5)</p>
+    <!-- <p>Comments (5)</p>
     <div class="mb-3 d-flex flex-column gap-2">
       <OtherComment></OtherComment>
       <OtherComment></OtherComment>
       <OtherComment></OtherComment>
       <OtherComment></OtherComment>
       <OtherComment></OtherComment>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script setup>
 import CreateComment from "@/components/create-comment.vue";
 import OtherComment from "@/components/other-comment.vue";
+import api from "@/http/api";
 import { ref } from "vue";
+
+const props = defineProps({
+  post: {
+    type: Object,
+    required: true,
+  },
+  isOwnPost: {
+    type: Boolean,
+    required: true,
+  },
+});
+
+const emits = defineEmits(["postDeleted"]);
 
 const showCreateComment = ref(false);
 const isLiked = ref(false);
+const apiUrl = import.meta.env.VITE_API_URL;
+
+const deletePost = async () => {
+  const response = await api.put(`/post/delete/?id=${props.post.id}`);
+  emits("postDeleted", props.post.id);
+};
 </script>
 
 <style scoped>
