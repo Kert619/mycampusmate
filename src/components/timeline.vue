@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!showMessage">
+  <div>
     <div class="mt-3 p-3 d-flex gap-3 bg-white">
       <div style="height: 300px; width: 100%; position: relative">
         <VLazyImage
@@ -61,62 +61,11 @@
       ></Post>
     </div>
   </div>
-
-  <div class="bg-white h-100 d-flex flex-column" v-else>
-    <div class="d-flex bg-primary text-white">
-      <button class="btn text-white" @click="showMessage = false">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          fill="currentColor"
-          class="bi bi-arrow-left-short"
-          viewBox="0 0 16 16"
-        >
-          <path
-            fill-rule="evenodd"
-            d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"
-          />
-        </svg>
-      </button>
-      <h4 class="text-end py-2 px-4 flex-grow-1">
-        {{ `${student.first_name} ${student.last_name}` }}
-      </h4>
-    </div>
-
-    <div class="p-3 d-flex flex-column gap-3 flex-grow-1 overflow-auto">
-      <!-- CHAT LEFT -->
-      <div class="d-flex justify-content-start">
-        <div
-          class="border p-2 rounded-4 rounded-top-0 rounded-end-4 w-75"
-          style="background-color: #f5deb3"
-        >
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ratione
-          voluptatem perferendis possimus aliquam esse pariatur, recusandae
-          aperiam cumque culpa, expedita eum. Ipsa vel aut delectus, quam minus
-          praesentium autem accusamus.
-        </div>
-      </div>
-      <!-- CHAT RIGHT -->
-      <div class="d-flex justify-content-end">
-        <div
-          class="border p-2 rounded-4 rounded-end-0 rounded-bottom-4 w-75"
-          style="background-color: #b0e0e6"
-        >
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ratione
-          voluptatem perferendis possimus aliquam esse pariatur, recusandae
-          aperiam cumque culpa, expedita eum. Ipsa vel aut delectus, quam minus
-          praesentium autem accusamus.
-        </div>
-      </div>
-    </div>
-  </div>
 </template>
 
 <script setup>
 import Post from "@/components/post.vue";
 import CreatePost from "@/components/create-post.vue";
-import { ref } from "vue";
 const props = defineProps({
   student: {
     type: Object,
@@ -132,13 +81,7 @@ const props = defineProps({
   },
 });
 
-const showMessage = ref(false);
-
-const emits = defineEmits([
-  "postCreatedTimeline",
-  "postDeletedTimeline",
-  "addFriend",
-]);
+const emits = defineEmits(["postCreatedTimeline", "postDeletedTimeline"]);
 const apiUrl = import.meta.env.VITE_API_URL;
 
 const postCreated = () => {
@@ -147,10 +90,6 @@ const postCreated = () => {
 
 const deletePost = (postId) => {
   emits("postDeletedTimeline", props.student.id, postId);
-};
-
-const addFriend = () => {
-  emits("addFriend", props.student.id);
 };
 </script>
 
