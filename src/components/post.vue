@@ -24,15 +24,21 @@
     </button>
     <!-- PERSON WHO POST BUTTON-->
     <button class="btn mb-2 d-flex gap-2 align-items-center">
-      <VLazyImage
-        :src="`${apiUrl}${post.studentpost.student_profile.file_path}${post.studentpost.student_profile.file_rand_name}`"
+      <img
+        :src="
+          post.student_id
+            ? `${apiUrl}${post.studentpost.student_profile.file_path}${post.studentpost.student_profile.file_rand_name}`
+            : `${apiUrl}${post.adminpost.file_path}${post.adminpost.admin_profile.file_rand_name}`
+        "
         class="rounded-circle"
         width="24"
         height="24"
       />
       <div class="d-flex flex-column align-items-start">
         <span class="text-sm">{{
-          `${post.studentpost.first_name} ${post.studentpost.last_name}`
+          post.student_id
+            ? `${post.studentpost.first_name} ${post.studentpost.last_name}`
+            : `${post.adminpost.first_name} ${post.adminpost.last_name}`
         }}</span>
         <span class="text-xs text-secondary">{{
           new Date(post.createdAt).toLocaleString("en-PH", {
@@ -49,7 +55,7 @@
 
     <!-- POST IMAGE -->
     <div class="mb-3 border" v-if="post.post_files">
-      <VLazyImage
+      <img
         class="w-100 object-fit-cover"
         :src="`${apiUrl}${post.post_files.file_path}${post.post_files.file_rand_name}`"
       />

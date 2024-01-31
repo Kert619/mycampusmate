@@ -33,8 +33,7 @@
     <div class="d-flex flex-column gap-3 mt-5">
       <CreatePost
         v-if="isOwnTimeline"
-        :auth-student-id="authStudentId"
-        :student-name="`${student.first_name} ${student.last_name}`"
+        :name="`${student.first_name} ${student.last_name}`"
         :profile="`${apiUrl}${student.student_profile.file_path}${student.student_profile.file_rand_name}`"
         @post-created="postCreated"
       ></CreatePost>

@@ -3,13 +3,8 @@
     <div class="mb-3">
       <!-- USER WHO POST BUTTON-->
       <button class="btn mb-2 d-flex gap-2 align-items-center">
-        <VLazyImage
-          :src="profile"
-          class="rounded-circle"
-          width="24"
-          height="24"
-        />
-        <span class="text-sm">{{ studentName }}</span>
+        <img :src="profile" class="rounded-circle" width="24" height="24" />
+        <span class="text-sm">{{ name }}</span>
       </button>
 
       <div class="mb-3 border" v-if="fileUploadPath">
@@ -86,11 +81,7 @@ import api from "@/http/api";
 import { ref } from "vue";
 
 const props = defineProps({
-  authStudentId: {
-    type: Number,
-    required: true,
-  },
-  studentName: {
+  name: {
     type: String,
     required: true,
   },
@@ -141,7 +132,6 @@ const createPost = async () => {
     "/post/create",
     {
       file: fileUpload.value,
-      student_id: props.authStudentId,
       post_description: postContent.value,
       visibility: 1,
     },

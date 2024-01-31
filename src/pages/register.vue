@@ -191,7 +191,8 @@ const form = ref({
   email: "",
   password: "",
   confirm: false,
-  usertype: 2,
+  usertype: 1,
+  is_approved: 1,
 });
 
 const showSuccess = ref(false);

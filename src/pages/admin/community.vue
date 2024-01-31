@@ -8,12 +8,8 @@
       <!-- MAIN CONTENT -->
       <div class="p-3 flex-grow-1">
         <div style="height: 300px; position: relative">
-          <VLazyImage
-            src="/bg.png"
-            src-placeholder="/bg-thumbnail.png"
-            class="cover-photo"
-          />
-          <VLazyImage
+          <img src="/bg.png" class="cover-photo" />
+          <img
             src="/shortcut.png"
             class="profile-photo"
             width="200"
@@ -70,7 +66,25 @@
               role="tabpanel"
               tabindex="0"
             >
-              Timeline
+              <div class="bg-white d-flex justify-content-center">
+                <div style="max-width: 600px">
+                  <CreatePost
+                    v-if="authAdmin"
+                    :name="`${authAdmin.first_name} ${authAdmin.last_name}`"
+                    :profile="`${apiUrl}${authAdmin.admin_profile.file_path}${authAdmin.admin_profile.file_rand_name}`"
+                    @post-created="getPosts"
+                  ></CreatePost>
+
+                  <template v-if="posts">
+                    <Post
+                      v-for="post in posts"
+                      :post="post"
+                      :isOwnPost="post.admin_id == authAdmin.id"
+                      @post-deleted="refreshPosts"
+                    ></Post>
+                  </template>
+                </div>
+              </div>
             </div>
             <div
               class="tab-pane fade"
@@ -146,6 +160,34 @@
 <script setup>
 import AdminNav from "@/components/admin-nav.vue";
 import AdminSideBar from "@/components/admin-sidebar.vue";
+import CreatePost from "@/components/create-post.vue";
+import Post from "@/components/post.vue";
+import { onMounted, ref } from "vue";
+import api from "@/http/api";
+
+const authAdmin = ref(null);
+const apiUrl = import.meta.env.VITE_API_URL;
+const posts = ref([]);
+
+const getCurrentUser = async () => {
+  const response = await api.get("/jwt/getOne/");
+  authAdmin.value = response.data;
+  console.log(authAdmin.value);
+};
+
+onMounted(async () => {
+  await getCurrentUser();
+  await getPosts();
+});
+
+const getPosts = async () => {
+  const response = await api.get("/post/get");
+  posts.value = response.data;
+};
+
+const refreshPosts = async () => {
+  await getPosts();
+};
 </script>
 
 <style scoped>

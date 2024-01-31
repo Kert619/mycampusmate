@@ -64,8 +64,7 @@
             <!-- DISPLAY CREATE POST IF USER DID NOT SEARCH A STUDENT -->
             <CreatePost
               v-if="authStudent && !currentStudent"
-              :auth-student-id="authStudent.id"
-              :student-name="`${authStudent.first_name} ${authStudent.last_name}`"
+              :name="`${authStudent.first_name} ${authStudent.last_name}`"
               :profile="`${apiUrl}${authStudent.student_profile.file_path}${authStudent.student_profile.file_rand_name}`"
               @post-created="getPosts"
             ></CreatePost>
@@ -178,20 +177,14 @@ const searchStudent = async (id) => {
 
 const refreshPosts = async () => {
   currentStudent.value = null;
-  await getPosts(true);
+  await getPosts();
 };
 
 const refreshSearchStudent = async (id) => {
   await searchStudent(id, true);
 };
 
-const addFriend = async (studentId) => {
-  // const response = await api.put("/student/addFriend/", { id: studentId });
-  // console.log(response);
-};
-
 const logout = async () => {
-  const response = await api.get("/jwt/logout/");
   localStorage.removeItem("token");
   router.push("/login");
 };
