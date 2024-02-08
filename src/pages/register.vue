@@ -102,6 +102,7 @@
               required
               accept="image/*"
               @change="fileSelected"
+              ref="fileRef"
             />
           </div>
           <div class="col-md-6">
@@ -163,7 +164,9 @@
           <span class="fw-bold">{{ errorMsg }}</span>
         </div>
 
-        <button type="submit" class="btn btn-danger">Register</button>
+        <button type="submit" class="btn btn-danger" :disabled="loading">
+          Register
+        </button>
         <RouterLink to="/login" class="btn btn-secondary ms-2">Back</RouterLink>
       </form>
     </div>
@@ -191,19 +194,24 @@ const form = ref({
   email: "",
   password: "",
   confirm: false,
-  usertype: 1,
-  is_approved: 1,
+  usertype: 2,
+  is_approved: 0,
 });
 
 const showSuccess = ref(false);
 const errorMsg = ref(null);
+const loading = ref(false);
+const fileRef = ref(null);
 
 // SUBMIT THE FORM
 const submitForm = async () => {
   try {
+    loading.value = true;
     const response = await api.post("/jwt/register/", form.value, {
       headers: { "Content-Type": "multipart/form-data" },
     });
+    loading.value = false;
+    fileRef.value = null;
 
     // CLEAR THE INPUTS WHEN SUCCESSFULLY REGISTERED
     form.value.first_name = "";

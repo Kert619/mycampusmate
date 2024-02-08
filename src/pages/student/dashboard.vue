@@ -5,7 +5,7 @@
     <main class="flex-grow-1 container overflow-auto">
       <div class="row h-100 overflow-auto">
         <!-- LEFT SIDEBAR -->
-        <div class="col h-100 overflow-auto">
+        <div class="col h-100 overflow-auto d-none d-sm-block">
           <div class="p-3 h-100 overflow-auto d-flex flex-column">
             <!-- SEARCH PERSON INPUT -->
             <div class="mb-3 position-relative">
@@ -18,7 +18,7 @@
 
               <!-- SEARCH RESULT -->
               <div
-                class="mb-3 bg-white position-absolute border"
+                class="mb-3 bg-white position-absolute border overflow-auto"
                 style="z-index: 9; width: 100%; max-height: 400px"
                 v-if="searchResult.length > 0"
               >
@@ -29,7 +29,7 @@
                     v-for="student in searchResult"
                   >
                     <VLazyImage
-                      :src="`${apiUrl}${student.student.student_profile.file_path}${student.student.student_profile.file_rand_name}`"
+                      :src="`${apiUrl}${student.student.student_profile?.file_path}${student.student.student_profile?.file_rand_name}`"
                       class="rounded-circle"
                       width="24"
                       height="24"
@@ -55,7 +55,7 @@
 
         <!-- MAIN CONTENT/NEWSFEED -->
         <div
-          class="col col-6 overflow-auto h-100 overflow-auto bg-body-secondary"
+          class="col col-sm-6 overflow-auto h-100 overflow-auto bg-body-secondary"
         >
           <div
             class="p-3 h-100 overflow-auto d-flex flex-column gap-3"
@@ -65,7 +65,7 @@
             <CreatePost
               v-if="authStudent && !currentStudent"
               :name="`${authStudent.first_name} ${authStudent.last_name}`"
-              :profile="`${apiUrl}${authStudent.student_profile.file_path}${authStudent.student_profile.file_rand_name}`"
+              :profile="`${apiUrl}${authStudent.student_profile?.file_path}${authStudent.student_profile?.file_rand_name}`"
               @post-created="getPosts"
             ></CreatePost>
             <!-- DISPLAY THIS POSTS IF USER DID NOT SEARCH A STUDENT -->
@@ -74,27 +74,39 @@
                 v-for="post in posts"
                 :post="post"
                 :isOwnPost="post.student_id == authStudent.id"
+                :user-id="authStudent.user_id"
+                :id="authStudent.id"
+                :is-admin="false"
+                :profile="`${apiUrl}${authStudent.student_profile?.file_path}${authStudent.student_profile?.file_rand_name}`"
                 @post-deleted="refreshPosts"
+                @toggle-like="refreshPosts"
+                @comment-created="refreshPosts"
+                @refresh-comments="refreshPosts"
+                @comment-deleted="refreshPosts"
               ></Post>
             </template>
             <!-- TIMELINE -->
 
-            <!-- DISPLAY THIS TIMELINE IF USER SEARCH A STUDENT -->
+            <!-- DISPLAY THIS TIMELINE IF USER SEARCHED A STUDENT -->
             <template v-if="currentStudent">
               <Timeline
                 :student="currentStudent"
                 :is-own-timeline="currentStudent.id == authStudent.id"
                 :auth-student-id="authStudent.id"
+                :is-admin="false"
                 @postCreatedTimeline="refreshSearchStudent"
                 @postDeletedTimeline="refreshSearchStudent"
-                @add-friend="addFriend"
+                @toggle-like="refreshSearchStudent"
+                @comment-created="refreshSearchStudent"
+                @refresh-comments="refreshSearchStudent"
+                @comment-deleted="refreshSearchStudent"
               ></Timeline>
             </template>
           </div>
         </div>
 
         <!-- RIGHT SIDEBAR -->
-        <div class="col h-100 overflow-auto">
+        <div class="col h-100 overflow-auto d-none d-sm-block">
           <div class="p-3 h-100 overflow-auto d-flex flex-column">
             <!-- SEARCH FRIEND INPUT -->
             <div class="mb-3">
@@ -106,7 +118,11 @@
             </div>
 
             <div class="flex-grow-1 overflow-auto">
-              <FriendList></FriendList>
+              <FriendList
+                v-if="users && authStudent"
+                :users="users"
+                :logged-in-id="authStudent.user_id"
+              ></FriendList>
             </div>
           </div>
         </div>
@@ -132,6 +148,7 @@ const newsfeedRef = ref(null);
 const authStudent = ref(null);
 const posts = ref([]);
 const students = ref([]);
+const users = ref([]);
 const searchInput = ref("");
 const searchResult = ref([]);
 const currentStudent = ref(null);
@@ -150,8 +167,7 @@ watch(searchInput, () => {
 
 onMounted(async () => {
   await getCurrentUser();
-  await getStudents();
-  await getPosts();
+  await Promise.all([getStudents(), getPosts(), getUsers()]);
 });
 
 const getCurrentUser = async () => {
@@ -169,6 +185,11 @@ const getStudents = async () => {
   students.value = response.data;
 };
 
+const getUsers = async () => {
+  const response = await api.get("/admin/getAllUser/");
+  users.value = response.data;
+};
+
 const searchStudent = async (id) => {
   const response = await api.get(`/post/getOne/?id=${id}`);
   currentStudent.value = response.data;
@@ -181,7 +202,7 @@ const refreshPosts = async () => {
 };
 
 const refreshSearchStudent = async (id) => {
-  await searchStudent(id, true);
+  await searchStudent(id);
 };
 
 const logout = async () => {

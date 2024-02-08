@@ -155,7 +155,7 @@ const loadUser = async () => {
   user.value.contact_num = response.data.contact_num;
   user.value.emergency_contact = response.data.emergency_contact;
   filePath.value = `${import.meta.env.VITE_API_URL}${
-    response.data.student_profile.file_path
+    response.data.student_profile?.file_path
   }`;
 };
 

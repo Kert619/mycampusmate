@@ -3,7 +3,12 @@
     <div class="mb-3">
       <!-- USER WHO POST BUTTON-->
       <button class="btn mb-2 d-flex gap-2 align-items-center">
-        <img :src="profile" class="rounded-circle" width="24" height="24" />
+        <VLazyImage
+          :src="profile"
+          class="rounded-circle"
+          width="24"
+          height="24"
+        />
         <span class="text-sm">{{ name }}</span>
       </button>
 
@@ -30,7 +35,7 @@
         @change="fileSelected"
       />
       <button
-        v-if="fileUploadPath"
+        v-if="fileUploadPath && !loading"
         class="btn btn-danger"
         @click="removePostImage"
       >
@@ -50,7 +55,7 @@
           />
         </svg>
       </button>
-      <label class="btn btn-success" for="uploadImage">
+      <label class="btn btn-success" for="uploadImage" v-if="!loading">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"
@@ -66,11 +71,12 @@
         </svg>
       </label>
       <button
-        :disabled="!postContent && !fileUploadPath"
+        :disabled="(!postContent && !fileUploadPath) || loading"
         class="btn btn-primary"
         @click="createPost"
       >
-        Post
+        <span v-if="loading">Posting...</span>
+        <span v-else>Post</span>
       </button>
     </div>
   </div>
@@ -97,6 +103,7 @@ const textAreaRef = ref(null);
 const fileUploadPath = ref("");
 const fileUpload = ref(null);
 const postContent = ref("");
+const loading = ref(false);
 
 // AUTO RESIZE THE INPUT BASE ON THE CONTENT
 const resize = (e) => {
@@ -128,6 +135,7 @@ const removePostImage = () => {
 };
 
 const createPost = async () => {
+  loading.value = true;
   const response = await api.post(
     "/post/create",
     {
@@ -137,6 +145,7 @@ const createPost = async () => {
     },
     { headers: { "Content-Type": "multipart/form-data" } }
   );
+  loading.value = false;
 
   postContent.value = "";
   fileUploadPath.value = "";

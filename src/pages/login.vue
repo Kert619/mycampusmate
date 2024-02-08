@@ -1,10 +1,6 @@
 <template>
   <div>
-    <vLazyImage
-      src="/bg.png"
-      src-placeholder="/bg-thumbnail.png"
-      class="bg-img"
-    />
+    <img src="/bg.png" src-placeholder="/bg-thumbnail.png" class="bg-img" />
     <div class="darken"></div>
     <div class="d-flex justify-content-center">
       <!-- WE ADD .PREVENT TO AVOID RELOADING THE PAGE WHEN THE FORM SUBMITS -->
@@ -27,7 +23,13 @@
         </div>
 
         <div class="d-grid">
-          <button type="submit" class="btn btn-danger">Login</button>
+          <button type="submit" class="btn btn-danger" :disabled="loading">
+            <template v-if="loading">
+              <span class="spinner-border spinner-border-sm"></span>
+              <span class="ms-2">Logging in...</span>
+            </template>
+            <span v-else>Login</span>
+          </button>
         </div>
 
         <p class="mt-3 text-center">
@@ -51,6 +53,7 @@ const form = ref({
   username: "",
   password: "",
 });
+const loading = ref(false);
 
 // WE STORE THE ERROR MESSAGE HERE IF LOGIN FAILED
 const errorMsg = ref(null);
@@ -58,7 +61,9 @@ const errorMsg = ref(null);
 // SUBMIT THE FORM
 const submitForm = async () => {
   try {
+    loading.value = true;
     const response = await api.post("/jwt/login/", form.value);
+    loading.value = false;
 
     // STORE THE TOKEN IN LOCAL STORAGE IF LOGIN SUCCESS
     const token = response.data.token;

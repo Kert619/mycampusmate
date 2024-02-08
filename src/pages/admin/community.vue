@@ -8,8 +8,8 @@
       <!-- MAIN CONTENT -->
       <div class="p-3 flex-grow-1">
         <div style="height: 300px; position: relative">
-          <img src="/bg.png" class="cover-photo" />
-          <img
+          <VLazyImage src="/bg.png" class="cover-photo" />
+          <VLazyImage
             src="/shortcut.png"
             class="profile-photo"
             width="200"
@@ -67,11 +67,11 @@
               tabindex="0"
             >
               <div class="bg-white d-flex justify-content-center">
-                <div style="max-width: 600px">
+                <div style="max-width: 600px; width: 100%">
                   <CreatePost
                     v-if="authAdmin"
                     :name="`${authAdmin.first_name} ${authAdmin.last_name}`"
-                    :profile="`${apiUrl}${authAdmin.admin_profile.file_path}${authAdmin.admin_profile.file_rand_name}`"
+                    :profile="`${apiUrl}${authAdmin.admin_profile?.file_path}${authAdmin.admin_profile?.file_rand_name}`"
                     @post-created="getPosts"
                   ></CreatePost>
 
@@ -80,7 +80,15 @@
                       v-for="post in posts"
                       :post="post"
                       :isOwnPost="post.admin_id == authAdmin.id"
+                      :user-id="authAdmin.user_id"
+                      :id="authAdmin.id"
+                      :is-admin="true"
+                      :profile="`${apiUrl}${authAdmin.admin_profile?.file_path}${authAdmin.admin_profile?.file_rand_name}`"
                       @post-deleted="refreshPosts"
+                      @toggle-like="refreshPosts"
+                      @comment-created="refreshPosts"
+                      @refresh-comments="refreshPosts"
+                      @comment-deleted="refreshPosts"
                     ></Post>
                   </template>
                 </div>
@@ -172,7 +180,6 @@ const posts = ref([]);
 const getCurrentUser = async () => {
   const response = await api.get("/jwt/getOne/");
   authAdmin.value = response.data;
-  console.log(authAdmin.value);
 };
 
 onMounted(async () => {

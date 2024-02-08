@@ -41,6 +41,41 @@
       </svg>
       <span>Timeline</span>
     </button>
+    <!-- FRIEND REQUEST BUTTON -->
+    <button class="btn btn-light text-start d-flex align-items-center gap-2">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        fill="currentColor"
+        class="bi bi-people-fill"
+        viewBox="0 0 16 16"
+      >
+        <path
+          d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"
+        />
+      </svg>
+      Friend Requests
+    </button>
+    <!-- GROUP CHAT BUTTON -->
+    <RouterLink
+      to="/student/group-chat"
+      class="btn btn-light text-start d-flex align-items-center gap-2"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        fill="currentColor"
+        class="bi bi-chat-right"
+        viewBox="0 0 16 16"
+      >
+        <path
+          d="M2 1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h9.586a2 2 0 0 1 1.414.586l2 2V2a1 1 0 0 0-1-1zm12-1a2 2 0 0 1 2 2v12.793a.5.5 0 0 1-.854.353l-2.853-2.853a1 1 0 0 0-.707-.293H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2z"
+        />
+      </svg>
+      Group Chat
+    </RouterLink>
     <!-- LOGOUT BUTTON -->
     <button
       @click="logoutClicked"

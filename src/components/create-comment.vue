@@ -3,8 +3,7 @@
     <!-- COMMENT INPUT -->
     <div class="d-flex gap-3 mb-3">
       <VLazyImage
-        src="https://source.unsplash.com/random/300×300 "
-        src-placeholder="/spinner.svg"
+        :src="profile"
         class="rounded-circle"
         width="24"
         height="24"
@@ -15,24 +14,93 @@
         placeholder="Write a comment"
         ref="textAreaRef"
         @input="resize"
+        v-model="comment"
       ></textarea>
     </div>
 
     <!-- COMMENT BUTTON -->
     <div class="d-flex justify-content-end gap-3">
-      <button class="btn btn-primary">Comment</button>
+      <button class="btn btn-success btn-sm" @click="emits('refreshComments')">
+        Refresh Comments
+      </button>
+      <button
+        v-if="isAdmin"
+        class="btn btn-primary btn-sm"
+        @click="createAdminComment"
+        :disabled="!comment || loading"
+      >
+        <span v-if="loading"> Commenting</span>
+        <span v-else>Comment</span>
+      </button>
+
+      <button
+        v-else
+        class="btn btn-primary btn-sm"
+        @click="createStudentComment"
+        :disabled="!comment || loading"
+      >
+        <span v-if="loading"> Commenting</span>
+        <span v-else>Comment</span>
+      </button>
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
+import api from "@/http/api";
+
+const emits = defineEmits(["refreshComments", "commentCreated"]);
+
+const props = defineProps({
+  id: {
+    required: true,
+  },
+  profile: {
+    type: String,
+    required: true,
+  },
+  postId: {
+    required: true,
+  },
+  isAdmin: {
+    type: Boolean,
+    required: true,
+  },
+});
+
+const comment = ref("");
 const textAreaRef = ref(null);
+const loading = ref(false);
 
 // AUTO RESIZE THE INPUT BASE ON THE CONTENT
 const resize = () => {
   textAreaRef.value.style.height = "auto";
   textAreaRef.value.style.height = textAreaRef.value.scrollHeight + "px";
+};
+
+const createAdminComment = async () => {
+  loading.value = true;
+  const response = await api.post("/comments/addComment/", {
+    admin_id: props.id,
+    post_id: props.postId,
+    comments: comment.value,
+  });
+  loading.value = false;
+  comment.value = "";
+  emits("commentCreated");
+};
+
+const createStudentComment = async () => {
+  loading.value = true;
+  const response = await api.post("/comments/addComment/", {
+    student_id: props.id,
+    post_id: props.postId,
+    comments: comment.value,
+  });
+  loading.value = false;
+  comment.value = "";
+  emits("commentCreated");
 };
 </script>
 

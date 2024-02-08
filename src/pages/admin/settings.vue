@@ -162,7 +162,7 @@ const loadUser = async () => {
   user.value.emergency_contact = response.data.emergency_contact;
   filePath.value = `${import.meta.env.VITE_API_URL}${
     response.data.admin_profile?.file_path
-  }`;
+  }${response.data.admin_profile?.file_rand_name}`;
 };
 
 onMounted(async () => {

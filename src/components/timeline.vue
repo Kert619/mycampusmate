@@ -8,7 +8,7 @@
           class="cover-photo"
         />
         <VLazyImage
-          :src="`${apiUrl}${student.student_profile.file_path}${student.student_profile.file_rand_name}`"
+          :src="`${apiUrl}${student.student_profile?.file_path}${student.student_profile?.file_rand_name}`"
           class="profile-photo"
           width="200"
           height="200"
@@ -34,7 +34,7 @@
       <CreatePost
         v-if="isOwnTimeline"
         :name="`${student.first_name} ${student.last_name}`"
-        :profile="`${apiUrl}${student.student_profile.file_path}${student.student_profile.file_rand_name}`"
+        :profile="`${apiUrl}${student.student_profile?.file_path}${student.student_profile?.file_rand_name}`"
         @post-created="postCreated"
       ></CreatePost>
       <Post
@@ -44,6 +44,9 @@
           post_description: post.post_description,
           post_files: post.post_files,
           visibility: post.visibility,
+          student_id: authStudentId,
+          likes: post.likes,
+          comments_to_post: post.comments_to_post,
           studentpost: {
             first_name: student.first_name,
             middle_name: student.middle_name,
@@ -56,7 +59,15 @@
         }"
         v-for="post in student.poststudent"
         :isOwnPost="isOwnTimeline"
+        :is-admin="false"
+        :id="student.id"
+        :user-id="student.user_id"
+        :profile="`${apiUrl}${student.student_profile?.file_path}${student.student_profile?.file_rand_name}`"
         @post-deleted="deletePost(post.id)"
+        @toggle-like="emits('toggleLike', student.id)"
+        @comment-created="emits('commentCreated', student.id)"
+        @refresh-comments="emits('refreshComments', student.id)"
+        @comment-deleted="emits('commentDeleted', student.id)"
       ></Post>
     </div>
   </div>
@@ -78,9 +89,19 @@ const props = defineProps({
     type: Number,
     required: true,
   },
+  isAdmin: {
+    type: Boolean,
+    required: true,
+  },
 });
-
-const emits = defineEmits(["postCreatedTimeline", "postDeletedTimeline"]);
+const emits = defineEmits([
+  "postCreatedTimeline",
+  "postDeletedTimeline",
+  "toggleLike",
+  "commentCreated",
+  "refreshComments",
+  "commentDeleted",
+]);
 const apiUrl = import.meta.env.VITE_API_URL;
 
 const postCreated = () => {
