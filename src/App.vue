@@ -10,4 +10,7 @@
 img {
   object-fit: cover;
 }
+* {
+  scroll-behavior: smooth;
+}
 </style>

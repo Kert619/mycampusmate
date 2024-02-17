@@ -1,7 +1,11 @@
 <template>
   <div class="vw-100 vh-100 d-flex flex-column overflow-auto">
     <!-- HEADER -->
-    <StudentHeader></StudentHeader>
+    <StudentHeader
+      @newsfeed-clicked="newsFeedClicked"
+      @timeline-clicked="searchStudent(authStudent.id)"
+      @logout-clicked="logout"
+    ></StudentHeader>
     <main class="flex-grow-1 container overflow-auto">
       <div class="row h-100 overflow-auto">
         <!-- LEFT SIDEBAR -->
@@ -45,7 +49,7 @@
             <!-- NAVIGATION BUTTONS -->
             <div class="flex-grow-1 overflow-auto">
               <StudentSidebar
-                @newsfeed-clicked="refreshPosts"
+                @newsfeed-clicked="newsFeedClicked"
                 @timeline-clicked="searchStudent(authStudent.id)"
                 @logout-clicked="logout"
               ></StudentSidebar>
@@ -61,6 +65,9 @@
             class="p-3 h-100 overflow-auto d-flex flex-column gap-3"
             ref="newsfeedRef"
           >
+            <h4 v-if="!authStudent || !posts || !users || !students">
+              LOADING...
+            </h4>
             <!-- DISPLAY CREATE POST IF USER DID NOT SEARCH A STUDENT -->
             <CreatePost
               v-if="authStudent && !currentStudent"
@@ -72,17 +79,18 @@
             <template v-if="posts.length > 0 && authStudent && !currentStudent">
               <Post
                 v-for="post in posts"
+                :key="post.id"
                 :post="post"
                 :isOwnPost="post.student_id == authStudent.id"
                 :user-id="authStudent.user_id"
                 :id="authStudent.id"
                 :is-admin="false"
                 :profile="`${apiUrl}${authStudent.student_profile?.file_path}${authStudent.student_profile?.file_rand_name}`"
-                @post-deleted="refreshPosts"
-                @toggle-like="refreshPosts"
+                @post-deleted="postDeleted"
                 @comment-created="refreshPosts"
                 @refresh-comments="refreshPosts"
                 @comment-deleted="refreshPosts"
+                @reported="refreshPosts"
               ></Post>
             </template>
             <!-- TIMELINE -->
@@ -95,11 +103,12 @@
                 :auth-student-id="authStudent.id"
                 :is-admin="false"
                 @postCreatedTimeline="refreshSearchStudent"
-                @postDeletedTimeline="refreshSearchStudent"
+                @postDeletedTimeline="postDeletedTimeline"
                 @toggle-like="refreshSearchStudent"
-                @comment-created="refreshSearchStudent"
                 @refresh-comments="refreshSearchStudent"
                 @comment-deleted="refreshSearchStudent"
+                @reported="refreshSearchStudent"
+                @comment-created="refreshSearchStudent"
               ></Timeline>
             </template>
           </div>
@@ -201,8 +210,23 @@ const refreshPosts = async () => {
   await getPosts();
 };
 
+const newsFeedClicked = async () => {
+  await refreshPosts();
+  newsfeedRef.value.scrollTop = 0;
+};
+
 const refreshSearchStudent = async (id) => {
   await searchStudent(id);
+};
+
+const postDeleted = (id) => {
+  const idx = posts.value.findIndex((x) => x.id == id);
+  posts.value.splice(idx, 1);
+};
+
+const postDeletedTimeline = (studentId, postId) => {
+  const idx = currentStudent.value.poststudent.findIndex((x) => x.id == postId);
+  currentStudent.value.poststudent.splice(idx, 1);
 };
 
 const logout = async () => {

@@ -96,6 +96,7 @@
                 <span v-if="loading">Sending...</span>
                 <span v-else>Send</span>
               </button>
+              <EmojiPicker :native="true" @select="onSelectEmoji" />
             </div>
           </div>
         </div>
@@ -170,6 +171,20 @@ const hideMessages = () => {
   toUser.value = null;
   messages.value = [];
 };
+
+function onSelectEmoji(emoji) {
+  console.log(emoji);
+  /*
+    // result
+    { 
+        i: "😚", 
+        n: ["kissing face"], 
+        r: "1f61a", // with skin tone
+        t: "neutral", // skin tone
+        u: "1f61a" // without tone
+    }
+    */
+}
 </script>
 
 <style scoped>

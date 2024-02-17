@@ -7,7 +7,7 @@
       <div class="p-3 flex-grow-1">
         <h3 class="mb-4">Dashboard</h3>
         <div class="container text-center">
-          <div class="row">
+          <div class="row gap-3">
             <div class="col">
               <div class="card text-bg-success mb-3 h-100">
                 <div class="card-header">Approved</div>

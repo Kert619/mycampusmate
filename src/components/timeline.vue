@@ -58,16 +58,17 @@
           },
         }"
         v-for="post in student.poststudent"
+        :key="post.id"
         :isOwnPost="isOwnTimeline"
         :is-admin="false"
         :id="student.id"
         :user-id="student.user_id"
         :profile="`${apiUrl}${student.student_profile?.file_path}${student.student_profile?.file_rand_name}`"
         @post-deleted="deletePost(post.id)"
-        @toggle-like="emits('toggleLike', student.id)"
-        @comment-created="emits('commentCreated', student.id)"
         @refresh-comments="emits('refreshComments', student.id)"
+        @comment-created="emits('commentCreated', student.id)"
         @comment-deleted="emits('commentDeleted', student.id)"
+        @reported="emits('reported', student.id)"
       ></Post>
     </div>
   </div>
@@ -97,10 +98,10 @@ const props = defineProps({
 const emits = defineEmits([
   "postCreatedTimeline",
   "postDeletedTimeline",
-  "toggleLike",
   "commentCreated",
   "refreshComments",
   "commentDeleted",
+  "reported",
 ]);
 const apiUrl = import.meta.env.VITE_API_URL;
 

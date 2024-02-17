@@ -88,7 +88,7 @@ const createAdminComment = async () => {
   });
   loading.value = false;
   comment.value = "";
-  emits("commentCreated");
+  emits("commentCreated", { comment: comment.value });
 };
 
 const createStudentComment = async () => {
@@ -100,7 +100,7 @@ const createStudentComment = async () => {
   });
   loading.value = false;
   comment.value = "";
-  emits("commentCreated");
+  emits("commentCreated", { comment: comment.value });
 };
 </script>
 

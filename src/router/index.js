@@ -41,6 +41,10 @@ const router = createRouter({
       component: () => import("@/pages/admin/messages.vue"),
     },
     {
+      path: "/admin/reported-posts",
+      component: () => import("@/pages/admin/reports.vue"),
+    },
+    {
       path: "/student/newsfeed",
       component: () => import("@/pages/student/dashboard.vue"),
     },
@@ -55,6 +59,10 @@ const router = createRouter({
     {
       path: "/student/group-chat/:id",
       component: () => import("@/pages/student/group-chat-convo.vue"),
+    },
+    {
+      path: "/student/profile",
+      component: () => import("@/pages/student/profile.vue"),
     },
   ],
 });

@@ -1,12 +1,12 @@
 <template>
-  <div class="min-vh-100 d-flex flex-column overflow-auto bg-light">
+  <div class="vh-100 d-flex flex-column overflow-auto bg-light">
     <!-- ADMIN NAVIGATION BAR -->
     <AdminNav></AdminNav>
     <div class="d-flex flex-grow-1 overflow-auto">
       <!-- ADMIN SIDEBAR -->
       <AdminSideBar></AdminSideBar>
       <!-- MAIN CONTENT -->
-      <div class="p-3 flex-grow-1">
+      <div class="p-3 flex-grow-1 overflow-auto">
         <div style="height: 300px; position: relative">
           <VLazyImage src="/bg.png" class="cover-photo" />
           <VLazyImage
@@ -78,6 +78,7 @@
                   <template v-if="posts">
                     <Post
                       v-for="post in posts"
+                      :key="post.id"
                       :post="post"
                       :isOwnPost="post.admin_id == authAdmin.id"
                       :user-id="authAdmin.user_id"
@@ -85,10 +86,10 @@
                       :is-admin="true"
                       :profile="`${apiUrl}${authAdmin.admin_profile?.file_path}${authAdmin.admin_profile?.file_rand_name}`"
                       @post-deleted="refreshPosts"
-                      @toggle-like="refreshPosts"
                       @comment-created="refreshPosts"
                       @refresh-comments="refreshPosts"
                       @comment-deleted="refreshPosts"
+                      @reported="refreshPosts"
                     ></Post>
                   </template>
                 </div>
