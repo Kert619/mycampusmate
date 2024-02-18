@@ -68,6 +68,10 @@ const router = createRouter({
       path: "/student/help",
       component: () => import("@/pages/student/help.vue"),
     },
+    {
+      path: "/student/users",
+      component: () => import("@/pages/student/users.vue"),
+    },
   ],
 });
 

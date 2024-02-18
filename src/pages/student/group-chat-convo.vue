@@ -1,5 +1,5 @@
 <template>
-  <div class="vw-100 vh-100 d-flex flex-column overflow-auto">
+  <div class="vh-100 d-flex flex-column overflow-auto">
     <!-- HEADER -->
     <StudentHeader></StudentHeader>
     <div class="d-flex flex-grow-1 overflow-auto">

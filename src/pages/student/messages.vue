@@ -1,11 +1,16 @@
 <template>
-  <div class="vw-100 vh-100 d-flex flex-column overflow-auto">
+  <div class="vh-100 d-flex flex-column overflow-auto">
     <!-- HEADER -->
     <StudentHeader></StudentHeader>
     <div class="d-flex flex-grow-1 overflow-auto">
       <!-- MAIN CONTENT -->
       <div class="container p-3 flex-grow-1 d-flex flex-column overflow-auto">
-        <h3 class="mb-3">Messages</h3>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">Home</li>
+            <li class="breadcrumb-item active" aria-current="page">Messages</li>
+          </ol>
+        </nav>
         <div
           v-if="toUser && authStudent"
           class="flex-grow-1 overflow-auto d-flex flex-column"

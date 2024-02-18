@@ -124,7 +124,7 @@ watch(search, () => {
     filteredResults.value = users.value.filter((x) => {
       const name = `${x.student.first_name.toLowerCase()} ${x.student.middle_name.toLowerCase()} ${x.student.last_name.toLowerCase()}`;
 
-      return name.includes(search.value);
+      return name.includes(search.value.toLowerCase());
     });
   } else {
     filteredResults.value = users.value;

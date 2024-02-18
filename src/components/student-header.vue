@@ -72,6 +72,13 @@
           <button
             class="btn btn-light"
             data-bs-dismiss="offcanvas"
+            @click="chatsClicked"
+          >
+            Chats
+          </button>
+          <button
+            class="btn btn-light"
+            data-bs-dismiss="offcanvas"
             @click="groupchatClicked"
           >
             Group Chat
@@ -82,6 +89,13 @@
             @click="profileClicked"
           >
             Profile
+          </button>
+          <button
+            class="btn btn-light"
+            data-bs-dismiss="offcanvas"
+            @click="helpClicked"
+          >
+            Help Center
           </button>
           <button
             class="btn btn-light"
@@ -130,5 +144,13 @@ const timelineClicked = async () => {
 
 const groupchatClicked = () => {
   router.push("/student/group-chat");
+};
+
+const helpClicked = () => {
+  router.push("/student/help");
+};
+
+const chatsClicked = () => {
+  router.push("/student/users");
 };
 </script>

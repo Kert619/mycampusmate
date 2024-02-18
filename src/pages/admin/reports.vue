@@ -111,7 +111,9 @@ onMounted(async () => {
 watch(search, () => {
   if (search.value) {
     filteredResults.value = reportedPosts.value.filter((x) => {
-      return x.post_description.toLowerCase().includes(search.value);
+      return x.post_description
+        .toLowerCase()
+        .includes(search.value.toLowerCase());
     });
   } else {
     filteredResults.value = reportedPosts.value;
