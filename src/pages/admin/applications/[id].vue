@@ -7,7 +7,16 @@
       <AdminSideBar></AdminSideBar>
       <!-- MAIN CONTENT -->
       <div class="p-3 flex-grow-1">
-        <h3 class="mb-3">User Information</h3>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">Home</li>
+            <li class="breadcrumb-item">User Applications</li>
+            <li class="breadcrumb-item active" aria-current="page">
+              User Information
+            </li>
+          </ol>
+        </nav>
+
         <div class="container">
           <VLazyImage
             :src="filePath"

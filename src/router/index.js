@@ -64,6 +64,10 @@ const router = createRouter({
       path: "/student/profile",
       component: () => import("@/pages/student/profile.vue"),
     },
+    {
+      path: "/student/help",
+      component: () => import("@/pages/student/help.vue"),
+    },
   ],
 });
 

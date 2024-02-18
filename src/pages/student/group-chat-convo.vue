@@ -5,7 +5,14 @@
     <div class="d-flex flex-grow-1 overflow-auto">
       <!-- MAIN CONTENT -->
       <div class="container p-3 flex-grow-1 d-flex flex-column overflow-auto">
-        <h3 class="mb-3">Group Chat</h3>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">Home</li>
+            <li class="breadcrumb-item">Group Chat</li>
+            <li class="breadcrumb-item active" aria-current="page">Convo</li>
+          </ol>
+        </nav>
+
         <div
           class="flex-grow-1 overflow-auto d-flex flex-column position-relative"
         >

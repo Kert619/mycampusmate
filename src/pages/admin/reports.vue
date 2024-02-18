@@ -7,8 +7,25 @@
       <AdminSideBar></AdminSideBar>
       <!-- MAIN CONTENT -->
       <div class="p-3 flex-grow-1 overflow-auto">
-        <h3 class="mb-3">Reported Posts</h3>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">Home</li>
+            <li class="breadcrumb-item active" aria-current="page">
+              Reported Posts
+            </li>
+          </ol>
+        </nav>
+
         <div class="container">
+          <div class="mb-3">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Search post here"
+              v-model="search"
+            />
+          </div>
+
           <div class="table-responsive">
             <table class="table">
               <thead>
@@ -22,7 +39,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(post, idx) in reportedPosts">
+                <tr v-for="(post, idx) in filteredResults">
                   <th scope="row">{{ idx + 1 }}</th>
                   <td>{{ post.post_description }}</td>
                   <td>
@@ -75,17 +92,30 @@
 import api from "@/http/api";
 import AdminNav from "@/components/admin-nav.vue";
 import AdminSideBar from "@/components/admin-sidebar.vue";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 
 const reportedPosts = ref([]);
+const search = ref("");
+const filteredResults = ref([]);
 
 const loadReports = async () => {
   const response = await api.get("/post/getReportedPost");
   reportedPosts.value = response.data;
+  filteredResults.value = reportedPosts.value;
 };
 
 onMounted(async () => {
   await loadReports();
+});
+
+watch(search, () => {
+  if (search.value) {
+    filteredResults.value = reportedPosts.value.filter((x) => {
+      return x.post_description.toLowerCase().includes(search.value);
+    });
+  } else {
+    filteredResults.value = reportedPosts.value;
+  }
 });
 
 const deletePost = async (id) => {

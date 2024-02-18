@@ -7,12 +7,29 @@
       <AdminSideBar></AdminSideBar>
       <!-- MAIN CONTENT -->
       <div class="p-3 flex-grow-1 d-flex flex-column overflow-auto">
-        <h3 class="mb-3">Messages</h3>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">Home</li>
+            <li class="breadcrumb-item active" aria-current="page">
+              User Messages
+            </li>
+          </ol>
+        </nav>
+
+        <div class="mb-3">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Search name here"
+            v-model="search"
+          />
+        </div>
+
         <div class="d-flex flex-column gap-2" v-if="!toUser">
           <button
             class="btn d-flex gap-2 align-items-center bg-light"
             @click="toUser = user"
-            v-for="user in users"
+            v-for="user in filteredResults"
           >
             <VLazyImage
               :src="`${apiUrl}${user.student.student_profile?.file_path}${user.student.student_profile?.file_rand_name}`"
@@ -96,7 +113,6 @@
                 <span v-if="loading">Sending...</span>
                 <span v-else>Send</span>
               </button>
-              <EmojiPicker :native="true" @select="onSelectEmoji" />
             </div>
           </div>
         </div>
@@ -120,6 +136,9 @@ const messages = ref([]);
 const loading = ref(false);
 const loadingRefresh = ref(false);
 
+const search = ref("");
+const filteredResults = ref([]);
+
 const getCurrentUser = async () => {
   const response = await api.get("/jwt/getOne/");
   authAdmin.value = response.data;
@@ -129,6 +148,7 @@ const getCurrentUser = async () => {
 const loadUsers = async () => {
   const response = await api.get("/admin/getAllStudent/");
   users.value = response.data;
+  filteredResults.value = users.value;
 };
 
 // LOAD USERS WHEN PAGE LOADS
@@ -140,6 +160,18 @@ onMounted(async () => {
 watch(toUser, async () => {
   if (toUser.value) {
     await getMessages();
+  }
+});
+
+watch(search, () => {
+  if (search.value) {
+    filteredResults.value = users.value.filter((x) => {
+      const name = `${x.student.first_name.toLowerCase()} ${x.student.middle_name.toLowerCase()} ${x.student.last_name.toLowerCase()}`;
+
+      return name.includes(search.value);
+    });
+  } else {
+    filteredResults.value = users.value;
   }
 });
 
@@ -171,20 +203,6 @@ const hideMessages = () => {
   toUser.value = null;
   messages.value = [];
 };
-
-function onSelectEmoji(emoji) {
-  console.log(emoji);
-  /*
-    // result
-    { 
-        i: "😚", 
-        n: ["kissing face"], 
-        r: "1f61a", // with skin tone
-        t: "neutral", // skin tone
-        u: "1f61a" // without tone
-    }
-    */
-}
 </script>
 
 <style scoped>

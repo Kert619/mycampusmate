@@ -5,7 +5,15 @@
     <div class="d-flex flex-grow-1 overflow-auto">
       <!-- MAIN CONTENT -->
       <div class="container p-3 flex-grow-1 d-flex flex-column overflow-auto">
-        <h3 class="mb-3">Group Chat</h3>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">Home</li>
+            <li class="breadcrumb-item active" aria-current="page">
+              Group Chat
+            </li>
+          </ol>
+        </nav>
+
         <div class="input-group mb-3">
           <RouterLink to="/student/newsfeed" class="btn btn-outline-primary"
             >Back</RouterLink

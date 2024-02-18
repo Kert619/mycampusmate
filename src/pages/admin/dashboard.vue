@@ -5,7 +5,15 @@
     <div class="d-flex flex-grow-1 overflow-auto">
       <AdminSideBar></AdminSideBar>
       <div class="p-3 flex-grow-1">
-        <h3 class="mb-4">Dashboard</h3>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">Home</li>
+            <li class="breadcrumb-item active" aria-current="page">
+              Dashboard
+            </li>
+          </ol>
+        </nav>
+
         <div class="container text-center">
           <div class="row gap-3">
             <div class="col">

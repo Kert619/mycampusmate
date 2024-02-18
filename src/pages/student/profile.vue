@@ -5,7 +5,13 @@
     <div class="d-flex flex-grow-1 overflow-auto">
       <!-- MAIN CONTENT -->
       <div class="container p-3 flex-grow-1 d-flex flex-column overflow-auto">
-        <h3 class="mb-3">Profile</h3>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">Home</li>
+            <li class="breadcrumb-item active" aria-current="page">Profile</li>
+          </ol>
+        </nav>
+
         <div class="mx-auto" style="max-width: 400px">
           <div v-if="authStudent">
             <div

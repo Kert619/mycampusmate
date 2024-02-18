@@ -7,8 +7,25 @@
       <AdminSideBar></AdminSideBar>
       <!-- MAIN CONTENT -->
       <div class="p-3 flex-grow-1 overflow-auto">
-        <h3 class="mb-3">User Applications</h3>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">Home</li>
+            <li class="breadcrumb-item active" aria-current="page">
+              User Applications
+            </li>
+          </ol>
+        </nav>
+
         <div class="container">
+          <div class="mb-3">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Search name here"
+              v-model="search"
+            />
+          </div>
+
           <table class="table">
             <thead>
               <tr>
@@ -22,7 +39,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(user, idx) in users">
+              <tr v-for="(user, idx) in filteredResults">
                 <th scope="row">{{ idx + 1 }}</th>
                 <td>
                   {{
@@ -96,14 +113,29 @@
 import api from "@/http/api";
 import AdminNav from "@/components/admin-nav.vue";
 import AdminSideBar from "@/components/admin-sidebar.vue";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 
 const users = ref(null);
+const search = ref("");
+const filteredResults = ref([]);
+
+watch(search, () => {
+  if (search.value) {
+    filteredResults.value = users.value.filter((x) => {
+      const name = `${x.student.first_name.toLowerCase()} ${x.student.middle_name.toLowerCase()} ${x.student.last_name.toLowerCase()}`;
+
+      return name.includes(search.value);
+    });
+  } else {
+    filteredResults.value = users.value;
+  }
+});
 
 // GET ALL USERS
 const loadUsers = async () => {
   const response = await api.get("/admin/getAllStudent/");
   users.value = response.data;
+  filteredResults.value = users.value;
 };
 
 // LOAD USERS WHEN PAGE LOADS
